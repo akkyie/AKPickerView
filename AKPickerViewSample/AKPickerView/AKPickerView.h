@@ -15,7 +15,7 @@
 - (NSUInteger)numberOfItemsInPickerView:(AKPickerView *)pickerView;
 - (NSString *)pickerView:(AKPickerView *)pickerView titleForItem:(NSInteger)item;
 @optional
-- (NSString *)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item;
+- (void)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item;
 @end
 
 @interface AKPickerView : UIView

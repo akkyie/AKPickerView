@@ -58,4 +58,9 @@
 	return self.titles[item];
 }
 
+- (void)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item
+{
+	NSLog(@"%@", self.titles[item]);
+}
+
 @end
