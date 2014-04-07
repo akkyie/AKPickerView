@@ -1,7 +1,7 @@
 AKPickerView
 ============
 
-![image](./screenshot.gif)
+![image](https://raw.githubusercontent.com/Akkyie/AKPickerView/master/Screenshot.gif)
 
 
 A simple but customizable horizontal picker view.
