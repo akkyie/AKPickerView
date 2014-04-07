@@ -120,6 +120,9 @@
 									  animated:animated
 								scrollPosition:UICollectionViewScrollPositionNone];
 	[self scrollToItem:item animated:animated];
+
+	if ([self.delegate respondsToSelector:@selector(pickerView:didSelectItem:)])
+		[self.delegate pickerView:self didSelectItem:item];
 }
 
 - (void)didEndScrolling
