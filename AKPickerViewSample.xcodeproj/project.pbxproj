@@ -19,8 +19,9 @@
 		660F9EC018E6E9AC00EE7347 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EBF18E6E9AC00EE7347 /* XCTest.framework */; };
 		660F9EC118E6E9AC00EE7347 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA018E6E9AC00EE7347 /* Foundation.framework */; };
 		660F9EC218E6E9AC00EE7347 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA418E6E9AC00EE7347 /* UIKit.framework */; };
-		660F9ECA18E6E9AC00EE7347 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 660F9EC818E6E9AC00EE7347 /* InfoPlist.strings */; };
-		660F9ECC18E6E9AC00EE7347 /* AKPickerViewSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F9ECB18E6E9AC00EE7347 /* AKPickerViewSampleTests.m */; };
+		660F9EDB18E6EA4800EE7347 /* AKPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F9EDA18E6EA4800EE7347 /* AKPickerView.m */; };
+		66FB3E2918F298530024CEDD /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2718F298530024CEDD /* LICENSE */; };
+		66FB3E2A18F298530024CEDD /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2818F298530024CEDD /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,9 +51,10 @@
 		660F9EB818E6E9AC00EE7347 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		660F9EBE18E6E9AC00EE7347 /* AKPickerViewSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKPickerViewSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		660F9EBF18E6E9AC00EE7347 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		660F9EC718E6E9AC00EE7347 /* AKPickerViewSampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AKPickerViewSampleTests-Info.plist"; sourceTree = "<group>"; };
-		660F9EC918E6E9AC00EE7347 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		660F9ECB18E6E9AC00EE7347 /* AKPickerViewSampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKPickerViewSampleTests.m; sourceTree = "<group>"; };
+		660F9ED918E6EA4800EE7347 /* AKPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPickerView.h; sourceTree = "<group>"; };
+		660F9EDA18E6EA4800EE7347 /* AKPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPickerView.m; sourceTree = "<group>"; };
+		66FB3E2718F298530024CEDD /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		66FB3E2818F298530024CEDD /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +85,6 @@
 			isa = PBXGroup;
 			children = (
 				660F9EA618E6E9AC00EE7347 /* AKPickerViewSample */,
-				660F9EC518E6E9AC00EE7347 /* AKPickerViewSampleTests */,
 				660F9E9F18E6E9AC00EE7347 /* Frameworks */,
 				660F9E9E18E6E9AC00EE7347 /* Products */,
 			);
@@ -112,6 +113,9 @@
 		660F9EA618E6E9AC00EE7347 /* AKPickerViewSample */ = {
 			isa = PBXGroup;
 			children = (
+				66FB3E2718F298530024CEDD /* LICENSE */,
+				66FB3E2818F298530024CEDD /* README.md */,
+				660F9ED818E6EA4800EE7347 /* AKPickerView */,
 				660F9EAF18E6E9AC00EE7347 /* AKAppDelegate.h */,
 				660F9EB018E6E9AC00EE7347 /* AKAppDelegate.m */,
 				660F9EB218E6E9AC00EE7347 /* Main.storyboard */,
@@ -134,22 +138,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		660F9EC518E6E9AC00EE7347 /* AKPickerViewSampleTests */ = {
+		660F9ED818E6EA4800EE7347 /* AKPickerView */ = {
 			isa = PBXGroup;
 			children = (
-				660F9ECB18E6E9AC00EE7347 /* AKPickerViewSampleTests.m */,
-				660F9EC618E6E9AC00EE7347 /* Supporting Files */,
+				660F9ED918E6EA4800EE7347 /* AKPickerView.h */,
+				660F9EDA18E6EA4800EE7347 /* AKPickerView.m */,
 			);
-			path = AKPickerViewSampleTests;
-			sourceTree = "<group>";
-		};
-		660F9EC618E6E9AC00EE7347 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				660F9EC718E6E9AC00EE7347 /* AKPickerViewSampleTests-Info.plist */,
-				660F9EC818E6E9AC00EE7347 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
+			path = AKPickerView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,6 +226,8 @@
 			files = (
 				660F9EB918E6E9AC00EE7347 /* Images.xcassets in Resources */,
 				660F9EAB18E6E9AC00EE7347 /* InfoPlist.strings in Resources */,
+				66FB3E2A18F298530024CEDD /* README.md in Resources */,
+				66FB3E2918F298530024CEDD /* LICENSE in Resources */,
 				660F9EB418E6E9AC00EE7347 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -239,7 +236,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				660F9ECA18E6E9AC00EE7347 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +248,7 @@
 			files = (
 				660F9EB118E6E9AC00EE7347 /* AKAppDelegate.m in Sources */,
 				660F9EB718E6E9AC00EE7347 /* AKViewController.m in Sources */,
+				660F9EDB18E6EA4800EE7347 /* AKPickerView.m in Sources */,
 				660F9EAD18E6E9AC00EE7347 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,7 +257,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				660F9ECC18E6E9AC00EE7347 /* AKPickerViewSampleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,14 +285,6 @@
 				660F9EB318E6E9AC00EE7347 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		660F9EC818E6E9AC00EE7347 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				660F9EC918E6E9AC00EE7347 /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -380,6 +368,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AKPickerViewSample/AKPickerViewSample-Prefix.pch";
 				INFOPLIST_FILE = "AKPickerViewSample/AKPickerViewSample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -393,6 +382,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AKPickerViewSample/AKPickerViewSample-Prefix.pch";
 				INFOPLIST_FILE = "AKPickerViewSample/AKPickerViewSample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -457,6 +447,7 @@
 				660F9ED118E6E9AC00EE7347 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		660F9ED218E6E9AC00EE7347 /* Build configuration list for PBXNativeTarget "AKPickerViewSampleTests" */ = {
 			isa = XCConfigurationList;
@@ -465,6 +456,7 @@
 				660F9ED418E6E9AC00EE7347 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
