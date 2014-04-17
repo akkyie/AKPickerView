@@ -25,6 +25,10 @@
 
 - (void)initialize
 {
+	self.font = self.font ?: [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
+	self.textColor = self.textColor ?: [UIColor darkGrayColor];
+	self.highlightedTextColor = self.highlightedTextColor ?: [UIColor blackColor];
+
 	if (self.collectionView) [self.collectionView removeFromSuperview];
 	CGRect frame = CGRectInset(self.bounds, 0, (self.bounds.size.height - ceilf(self.font.lineHeight)) / 2);
 	self.collectionView = [[UICollectionView alloc] initWithFrame:frame

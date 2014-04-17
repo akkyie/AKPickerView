@@ -36,9 +36,6 @@
 					@"Fukuoka",
 					@"Shizuoka"];
 
-	self.pickerView.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
-	self.pickerView.textColor = [UIColor grayColor];
-	self.pickerView.highlightedTextColor = [UIColor blackColor];
 	[self.pickerView reloadData];
 }
 

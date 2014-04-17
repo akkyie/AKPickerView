@@ -20,6 +20,7 @@
 		660F9EC118E6E9AC00EE7347 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA018E6E9AC00EE7347 /* Foundation.framework */; };
 		660F9EC218E6E9AC00EE7347 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA418E6E9AC00EE7347 /* UIKit.framework */; };
 		660F9EDB18E6EA4800EE7347 /* AKPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F9EDA18E6EA4800EE7347 /* AKPickerView.m */; };
+		66B25010190018590021F045 /* AKPickerView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 66B2500F190018590021F045 /* AKPickerView.podspec */; };
 		66FB3E2E18F2A2200024CEDD /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2B18F2A2200024CEDD /* LICENSE */; };
 		66FB3E2F18F2A2200024CEDD /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2C18F2A2200024CEDD /* README.md */; };
 		66FB3E3018F2A2200024CEDD /* Screenshot.gif in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2D18F2A2200024CEDD /* Screenshot.gif */; };
@@ -54,6 +55,7 @@
 		660F9EBF18E6E9AC00EE7347 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		660F9ED918E6EA4800EE7347 /* AKPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPickerView.h; sourceTree = "<group>"; };
 		660F9EDA18E6EA4800EE7347 /* AKPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPickerView.m; sourceTree = "<group>"; };
+		66B2500F190018590021F045 /* AKPickerView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AKPickerView.podspec; sourceTree = "<group>"; };
 		66FB3E2B18F2A2200024CEDD /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		66FB3E2C18F2A2200024CEDD /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		66FB3E2D18F2A2200024CEDD /* Screenshot.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Screenshot.gif; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 		660F9E9418E6E9AC00EE7347 = {
 			isa = PBXGroup;
 			children = (
+				66B2500F190018590021F045 /* AKPickerView.podspec */,
 				66FB3E2B18F2A2200024CEDD /* LICENSE */,
 				66FB3E2C18F2A2200024CEDD /* README.md */,
 				66FB3E2D18F2A2200024CEDD /* Screenshot.gif */,
@@ -229,6 +232,7 @@
 			files = (
 				660F9EB918E6E9AC00EE7347 /* Images.xcassets in Resources */,
 				660F9EAB18E6E9AC00EE7347 /* InfoPlist.strings in Resources */,
+				66B25010190018590021F045 /* AKPickerView.podspec in Resources */,
 				66FB3E2F18F2A2200024CEDD /* README.md in Resources */,
 				66FB3E2E18F2A2200024CEDD /* LICENSE in Resources */,
 				66FB3E3018F2A2200024CEDD /* Screenshot.gif in Resources */,
