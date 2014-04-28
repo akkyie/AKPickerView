@@ -8,6 +8,15 @@ A simple but customizable horizontal picker view.
 
 Works on iOS 6/7.
 
+Installation
+------------
+
+Use [CocoaPods](http://cocoapods.org)
+
+    pod "AKPickerView"
+    
+…or simply add AKPickerView.h/m into your project.
+
 Usage
 -----
 
