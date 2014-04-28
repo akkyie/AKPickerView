@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "AKPickerView"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "A simple but customizable horizontal picker view."
 
   s.description  = <<-DESC
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios
   s.platform     = :ios, "6.0"
 
-  s.source       = { :git => "https://github.com/Akkyie/AKPickerView.git", :tag => '0.0.1' }
+  s.source       = { :git => "https://github.com/Akkyie/AKPickerView.git", :tag => '0.0.2' }
 
   s.source_files  = "AKPickerViewSample/AKPickerView/AKPickerView.{h,m}"
 
