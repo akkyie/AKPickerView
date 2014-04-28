@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios
   s.platform     = :ios, "6.0"
 
-  s.source       = { :git => "https://github.com/Akkyie/AKPickerView.git", :commit => "1d818673c9e3f7c730e892419bea562c43afb470" }
+  s.source       = { :git => "https://github.com/Akkyie/AKPickerView.git", :tag => '0.0.1' }
 
   s.source_files  = "AKPickerViewSample/AKPickerView/AKPickerView.{h,m}"
 

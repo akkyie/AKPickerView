@@ -8,6 +8,8 @@
 
 #import "AKPickerView.h"
 
+#import <Availability.h>
+
 @interface AKCollectionViewCell : UICollectionViewCell
 @property (nonatomic, strong) UILabel *label;
 @end
@@ -131,12 +133,14 @@
 
 - (void)didEndScrolling
 {
-	for (NSUInteger i = 0; i < [self collectionView:self.collectionView numberOfItemsInSection:0]; i++) {
-		NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-		AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-		if ([self offsetForItem:i] + cell.bounds.size.width / 2 > self.collectionView.contentOffset.x) {
-			[self selectItem:i animated:YES];
-			break;
+	if ([self.delegate numberOfItemsInPickerView:self]) {
+		for (NSUInteger i = 0; i < [self collectionView:self.collectionView numberOfItemsInSection:0]; i++) {
+			NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+			AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+			if ([self offsetForItem:i] + cell.bounds.size.width / 2 > self.collectionView.contentOffset.x) {
+				[self selectItem:i animated:YES];
+				break;
+			}
 		}
 	}
 }
@@ -145,7 +149,7 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-	return 1;
+	return ([self.delegate numberOfItemsInPickerView:self] > 0);
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -178,7 +182,7 @@
 {
 	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
 	CGSize size;
-	if ([title respondsToSelector:@selector(sizeWithAttributes:)]) {
+	if ([[[UIDevice currentDevice] systemVersion] floatValue] > 7.0) {
 		size = [title sizeWithAttributes:@{NSFontAttributeName: self.font}];
 	} else {
 		size = [title sizeWithFont:self.font];
@@ -315,10 +319,12 @@
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
 	NSMutableArray *attributes = [NSMutableArray array];
-    for (NSInteger i = 0; i < [self.collectionView numberOfItemsInSection:0]; i++) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-		[attributes addObject:[self layoutAttributesForItemAtIndexPath:indexPath]];
-    }
+	if ([self.collectionView numberOfSections]) {
+		for (NSInteger i = 0; i < [self.collectionView numberOfItemsInSection:0]; i++) {
+			NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+			[attributes addObject:[self layoutAttributesForItemAtIndexPath:indexPath]];
+		}
+	}
     return attributes;
 }
 
