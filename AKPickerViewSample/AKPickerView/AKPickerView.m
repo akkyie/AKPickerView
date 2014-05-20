@@ -166,6 +166,7 @@
 	cell.label.textColor = self.textColor;
 	cell.label.highlightedTextColor = self.highlightedTextColor;
 	cell.label.font = self.font;
+	cell.label.backgroundColor = [UIColor clearColor];
 	
 	if ([cell.label respondsToSelector:@selector(setAttributedText:)]) {
 		cell.label.attributedText = [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: self.font}];
