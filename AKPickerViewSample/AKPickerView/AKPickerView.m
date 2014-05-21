@@ -32,9 +32,10 @@
 	self.highlightedTextColor = self.highlightedTextColor ?: [UIColor blackColor];
 
 	if (self.collectionView) [self.collectionView removeFromSuperview];
-	CGRect frame = CGRectInset(self.bounds, 0, (self.bounds.size.height - ceilf(self.font.lineHeight)) / 2);
-	self.collectionView = [[UICollectionView alloc] initWithFrame:frame
-											 collectionViewLayout:[AKCollectionViewLayout new]];
+	AKCollectionViewLayout *collectionViewLayout = [AKCollectionViewLayout new];
+	collectionViewLayout.minimumLineSpacing = self.bounds.size.height;
+	self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
+											 collectionViewLayout:collectionViewLayout];
 	self.collectionView.showsHorizontalScrollIndicator = NO;
 	self.collectionView.backgroundColor = [UIColor clearColor];
 	self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
