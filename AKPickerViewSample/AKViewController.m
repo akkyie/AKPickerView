@@ -25,6 +25,8 @@
 	self.pickerView.delegate = self;
 	[self.view addSubview:self.pickerView];
 
+	self.pickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
 	self.titles = @[@"Tokyo",
 					@"Kanagawa",
 					@"Osaka",

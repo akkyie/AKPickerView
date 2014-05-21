@@ -19,6 +19,7 @@
 
 @interface AKPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, assign) NSUInteger selectedItem;
 - (CGFloat)offsetForItem:(NSUInteger)item;
 - (void)didEndScrolling;
 @end
@@ -76,6 +77,16 @@
 
 #pragma mark -
 
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+	[self.collectionView.collectionViewLayout invalidateLayout];
+	[self scrollToItem:self.selectedItem animated:NO];
+	self.collectionView.layer.mask.frame = self.collectionView.bounds;
+}
+
+#pragma mark -
+
 - (void)setFont:(UIFont *)font
 {
 	if (![_font isEqual:font]) {
@@ -123,6 +134,8 @@
 									  animated:animated
 								scrollPosition:UICollectionViewScrollPositionNone];
 	[self scrollToItem:item animated:animated];
+
+	self.selectedItem = item;
 
 	if ([self.delegate respondsToSelector:@selector(pickerView:didSelectItem:)])
 		[self.delegate pickerView:self didSelectItem:item];
