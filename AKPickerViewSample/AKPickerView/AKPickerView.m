@@ -31,9 +31,8 @@
 	self.textColor = self.textColor ?: [UIColor darkGrayColor];
 	self.highlightedTextColor = self.highlightedTextColor ?: [UIColor blackColor];
 
-	if (self.collectionView) [self.collectionView removeFromSuperview];
-	CGRect frame = CGRectInset(self.bounds, 0, (self.bounds.size.height - ceilf(self.font.lineHeight)) / 2);
-	self.collectionView = [[UICollectionView alloc] initWithFrame:frame
+	[self.collectionView removeFromSuperview];
+	self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
 											 collectionViewLayout:[AKCollectionViewLayout new]];
 	self.collectionView.showsHorizontalScrollIndicator = NO;
 	self.collectionView.backgroundColor = [UIColor clearColor];
@@ -81,8 +80,6 @@
 {
 	if (![_font isEqual:font]) {
 		_font = font;
-		CGRect frame = CGRectInset(self.bounds, 0, (self.bounds.size.height - ceilf(self.font.lineHeight)) / 2);
-		self.collectionView.frame = frame;
 		[self initialize];
 	}
 }
@@ -166,7 +163,6 @@
 	cell.label.textColor = self.textColor;
 	cell.label.highlightedTextColor = self.highlightedTextColor;
 	cell.label.font = self.font;
-	cell.label.backgroundColor = [UIColor clearColor];
 	
 	if ([cell.label respondsToSelector:@selector(setAttributedText:)]) {
 		cell.label.attributedText = [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: self.font}];
@@ -203,9 +199,9 @@
 	CGSize firstSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];
 	NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:number - 1 inSection:section];
 	CGSize lastSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:lastIndexPath];
-	return UIEdgeInsetsMake(0,
+	return UIEdgeInsetsMake((collectionView.bounds.size.height - ceilf(self.font.lineHeight)) / 2,
 							(collectionView.bounds.size.width - firstSize.width) / 2,
-							0,
+							(collectionView.bounds.size.height - ceilf(self.font.lineHeight)) / 2,
 							(collectionView.bounds.size.width - lastSize.width) / 2);
 }
 
@@ -240,6 +236,7 @@
 - (void)initialize
 {
 	self.label = [[UILabel alloc] initWithFrame:self.bounds];
+	self.label.backgroundColor = [UIColor clearColor];
 	self.label.textAlignment = NSTextAlignmentCenter;
 	self.label.textColor = [UIColor grayColor];
 	self.label.numberOfLines = 1;
