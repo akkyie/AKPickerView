@@ -99,6 +99,7 @@
 
 - (void)reloadData
 {
+    [self.collectionView.collectionViewLayout invalidateLayout];
 	[self.collectionView reloadData];
 }
 
