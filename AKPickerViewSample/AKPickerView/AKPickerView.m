@@ -196,7 +196,10 @@
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] > 7.0) {
 		size = [title sizeWithAttributes:@{NSFontAttributeName: self.font}];
 	} else {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 		size = [title sizeWithFont:self.font];
+#pragma GCC diagnostic pop
 	}
 	return CGSizeMake(ceilf(size.width), ceilf(size.height));
 }
