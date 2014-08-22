@@ -85,6 +85,12 @@
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 }
 
+- (CGSize)intrinsicContentSize
+{
+    CGSize size = [self sizeOfTitle:@"Xy"];
+    return CGSizeMake(UIViewNoIntrinsicMetric, size.height);
+}
+
 #pragma mark -
 
 - (void)setFont:(UIFont *)font
@@ -192,16 +198,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
-	CGSize size;
-	if ([[[UIDevice currentDevice] systemVersion] floatValue] > 7.0) {
-		size = [title sizeWithAttributes:@{NSFontAttributeName: self.font}];
-	} else {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-		size = [title sizeWithFont:self.font];
-#pragma GCC diagnostic pop
-	}
-	return CGSizeMake(ceilf(size.width), ceilf(size.height));
+	return [self sizeOfTitle:title];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
@@ -244,6 +241,22 @@
 					 forKey:kCATransactionDisableActions];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 	[CATransaction commit];
+}
+
+#pragma mark -
+
+- (CGSize)sizeOfTitle:(NSString *)title
+{
+    CGSize size;
+	if ([[[UIDevice currentDevice] systemVersion] floatValue] > 7.0) {
+		size = [title sizeWithAttributes:@{NSFontAttributeName: self.font}];
+	} else {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+		size = [title sizeWithFont:self.font];
+#pragma GCC diagnostic pop
+	}
+	return CGSizeMake(ceilf(size.width), ceilf(size.height));
 }
 
 @end
