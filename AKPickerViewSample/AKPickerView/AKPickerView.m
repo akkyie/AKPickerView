@@ -15,6 +15,7 @@
 @end
 
 @interface AKCollectionViewLayout : UICollectionViewFlowLayout
+@property (nonatomic, assign) CGFloat fisheye;
 @end
 
 @interface AKPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
@@ -31,10 +32,12 @@
 	self.font = self.font ?: [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
 	self.textColor = self.textColor ?: [UIColor darkGrayColor];
 	self.highlightedTextColor = self.highlightedTextColor ?: [UIColor blackColor];
-
+    self.fisheye = self.fisheye ?: 1.0;
+    
 	[self.collectionView removeFromSuperview];
-	self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
-											 collectionViewLayout:[AKCollectionViewLayout new]];
+    AKCollectionViewLayout *layout = [AKCollectionViewLayout new];
+    layout.fisheye = self.fisheye;
+	self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:layout];
 	self.collectionView.showsHorizontalScrollIndicator = NO;
 	self.collectionView.backgroundColor = [UIColor clearColor];
 	self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -44,7 +47,7 @@
 	[self.collectionView registerClass:[AKCollectionViewCell class]
 			forCellWithReuseIdentifier:NSStringFromClass([AKCollectionViewCell class])];
 	[self addSubview:self.collectionView];
-
+    
 	CAGradientLayer *maskLayer = [CAGradientLayer layer];
 	maskLayer.frame = self.collectionView.bounds;
 	maskLayer.colors = @[(id)[[UIColor clearColor] CGColor],
@@ -85,12 +88,26 @@
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 }
 
+- (CGSize)intrinsicContentSize
+{
+    CGSize size = [self sizeOfTitle:@"Xy"];
+    return CGSizeMake(UIViewNoIntrinsicMetric, size.height * self.fisheye);
+}
+
 #pragma mark -
 
 - (void)setFont:(UIFont *)font
 {
 	if (![_font isEqual:font]) {
 		_font = font;
+		[self initialize];
+	}
+}
+
+- (void)setFisheye:(CGFloat)fisheye
+{
+	if (_fisheye != fisheye) {
+		_fisheye = fisheye;
 		[self initialize];
 	}
 }
@@ -111,13 +128,13 @@
 		AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:_indexPath];
 		offset += cell.bounds.size.width;
 	}
-
+    
 	NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
 	CGSize firstSize = [self.collectionView cellForItemAtIndexPath:firstIndexPath].bounds.size;
 	NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
 	CGSize selectedSize = [self.collectionView cellForItemAtIndexPath:selectedIndexPath].bounds.size;
 	offset -= (firstSize.width - selectedSize.width) / 2;
-
+    
 	offset += self.interitemSpacing * item;
 	return offset;
 }
@@ -135,9 +152,9 @@
 									  animated:animated
 								scrollPosition:UICollectionViewScrollPositionNone];
 	[self scrollToItem:item animated:animated];
-
+    
 	self.selectedItem = item;
-
+    
 	if ([self.delegate respondsToSelector:@selector(pickerView:didSelectItem:)])
 		[self.delegate pickerView:self didSelectItem:item];
 }
@@ -171,7 +188,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
-
+    
 	AKCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([AKCollectionViewCell class])
 																		   forIndexPath:indexPath];
 	cell.label.textColor = self.textColor;
@@ -183,22 +200,16 @@
 	} else {
 		cell.label.text = title;
 	}
-
+    
 	[cell.label sizeToFit];
-
+    
 	return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
-	CGSize size;
-	if ([[[UIDevice currentDevice] systemVersion] floatValue] > 7.0) {
-		size = [title sizeWithAttributes:@{NSFontAttributeName: self.font}];
-	} else {
-		size = [title sizeWithFont:self.font];
-	}
-	return CGSizeMake(ceilf(size.width), ceilf(size.height));
+	return [self sizeOfTitle:title];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
@@ -241,6 +252,22 @@
 					 forKey:kCATransactionDisableActions];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 	[CATransaction commit];
+}
+
+#pragma mark -
+
+- (CGSize)sizeOfTitle:(NSString *)title
+{
+    CGSize size;
+	if ([[[UIDevice currentDevice] systemVersion] floatValue] > 7.0) {
+		size = [title sizeWithAttributes:@{NSFontAttributeName: self.font}];
+	} else {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+		size = [title sizeWithFont:self.font];
+#pragma GCC diagnostic pop
+	}
+	return CGSizeMake(ceilf(size.width), ceilf(size.height));
 }
 
 @end
@@ -315,16 +342,19 @@
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForItemAtIndexPath:indexPath];
-
+    
 	CGFloat distance = CGRectGetMidX(attributes.frame) - self.midX;
 	CGFloat currentAngle = self.maxAngle * distance / self.width;
 	CGFloat delta = sinf(currentAngle) * self.width - distance;
-
+    CGFloat scale = fmaxf(1.0, (1.0 - fabsf(distance / self.width)) * self.fisheye);
+    
 	attributes.transform3D = CATransform3DConcat(CATransform3DMakeRotation(currentAngle, 0, 1, 0),
 												 CATransform3DMakeTranslation(delta, 0, 0));
-
+    
+    attributes.transform3D = CATransform3DConcat(attributes.transform3D, CATransform3DMakeScale(scale, scale, 0));
+    
 	attributes.alpha = (ABS(distance) < self.width);
-
+    
 	return attributes;
 }
 
