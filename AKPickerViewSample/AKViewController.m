@@ -23,9 +23,13 @@
 
 	self.pickerView = [[AKPickerView alloc] initWithFrame:self.view.bounds];
 	self.pickerView.delegate = self;
+	self.pickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:self.pickerView];
 
-	self.pickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.pickerView.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
+	self.pickerView.highlightedFont = [UIFont fontWithName:@"HelveticaNeue" size:20];
+	self.pickerView.interitemSpacing = 20.0;
+	self.pickerView.fisheyeFactor = 0.001;
 
 	self.titles = @[@"Tokyo",
 					@"Kanagawa",
@@ -39,12 +43,6 @@
 					@"Shizuoka"];
 
 	[self.pickerView reloadData];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (NSUInteger)numberOfItemsInPickerView:(AKPickerView *)pickerView

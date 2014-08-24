@@ -21,8 +21,8 @@
 		660F9EC218E6E9AC00EE7347 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA418E6E9AC00EE7347 /* UIKit.framework */; };
 		660F9EDB18E6EA4800EE7347 /* AKPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F9EDA18E6EA4800EE7347 /* AKPickerView.m */; };
 		66B25010190018590021F045 /* AKPickerView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 66B2500F190018590021F045 /* AKPickerView.podspec */; };
+		66BEA9E419AA5BB4005F6407 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 66BEA9E319AA5BB4005F6407 /* README.md */; };
 		66FB3E2E18F2A2200024CEDD /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2B18F2A2200024CEDD /* LICENSE */; };
-		66FB3E2F18F2A2200024CEDD /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2C18F2A2200024CEDD /* README.md */; };
 		66FB3E3018F2A2200024CEDD /* Screenshot.gif in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2D18F2A2200024CEDD /* Screenshot.gif */; };
 /* End PBXBuildFile section */
 
@@ -56,8 +56,8 @@
 		660F9ED918E6EA4800EE7347 /* AKPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPickerView.h; sourceTree = "<group>"; };
 		660F9EDA18E6EA4800EE7347 /* AKPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPickerView.m; sourceTree = "<group>"; };
 		66B2500F190018590021F045 /* AKPickerView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AKPickerView.podspec; sourceTree = "<group>"; };
+		66BEA9E319AA5BB4005F6407 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		66FB3E2B18F2A2200024CEDD /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		66FB3E2C18F2A2200024CEDD /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		66FB3E2D18F2A2200024CEDD /* Screenshot.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Screenshot.gif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -90,8 +90,8 @@
 			children = (
 				66B2500F190018590021F045 /* AKPickerView.podspec */,
 				66FB3E2B18F2A2200024CEDD /* LICENSE */,
-				66FB3E2C18F2A2200024CEDD /* README.md */,
 				66FB3E2D18F2A2200024CEDD /* Screenshot.gif */,
+				66BEA9E319AA5BB4005F6407 /* README.md */,
 				660F9EA618E6E9AC00EE7347 /* AKPickerViewSample */,
 				660F9E9F18E6E9AC00EE7347 /* Frameworks */,
 				660F9E9E18E6E9AC00EE7347 /* Products */,
@@ -233,7 +233,6 @@
 				660F9EB918E6E9AC00EE7347 /* Images.xcassets in Resources */,
 				660F9EAB18E6E9AC00EE7347 /* InfoPlist.strings in Resources */,
 				66B25010190018590021F045 /* AKPickerView.podspec in Resources */,
-				66FB3E2F18F2A2200024CEDD /* README.md in Resources */,
 				66FB3E2E18F2A2200024CEDD /* LICENSE in Resources */,
 				66FB3E3018F2A2200024CEDD /* Screenshot.gif in Resources */,
 				660F9EB418E6E9AC00EE7347 /* Main.storyboard in Resources */,
@@ -256,6 +255,7 @@
 			files = (
 				660F9EB118E6E9AC00EE7347 /* AKAppDelegate.m in Sources */,
 				660F9EB718E6E9AC00EE7347 /* AKViewController.m in Sources */,
+				66BEA9E419AA5BB4005F6407 /* README.md in Sources */,
 				660F9EDB18E6EA4800EE7347 /* AKPickerView.m in Sources */,
 				660F9EAD18E6E9AC00EE7347 /* main.m in Sources */,
 			);
@@ -373,6 +373,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: KEIICHIRO YOSHIMURA (9959TSWU8T)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AKPickerViewSample/AKPickerViewSample-Prefix.pch";
 				INFOPLIST_FILE = "AKPickerViewSample/AKPickerViewSample-Info.plist";

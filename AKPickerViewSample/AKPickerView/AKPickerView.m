@@ -12,6 +12,8 @@
 
 @interface AKCollectionViewCell : UICollectionViewCell
 @property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) UIFont *font;
+@property (nonatomic, strong) UIFont *highlightedFont;
 @end
 
 @interface AKCollectionViewLayout : UICollectionViewFlowLayout
@@ -29,6 +31,7 @@
 - (void)initialize
 {
 	self.font = self.font ?: [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
+	self.highlightedFont = self.highlightedFont ?: [UIFont fontWithName:@"HelveticaNeue" size:20];
 	self.textColor = self.textColor ?: [UIColor darkGrayColor];
 	self.highlightedTextColor = self.highlightedTextColor ?: [UIColor blackColor];
 
@@ -59,11 +62,11 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self) {
+	self = [super initWithFrame:frame];
+	if (self) {
 		[self initialize];
-    }
-    return self;
+	}
+	return self;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -83,6 +86,15 @@
 	[self.collectionView.collectionViewLayout invalidateLayout];
 	[self scrollToItem:self.selectedItem animated:NO];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
+
+	CATransform3D transform = CATransform3DIdentity;
+	transform.m34 = -MAX(MIN(self.fisheyeFactor, 1.0), 0.0);
+	self.collectionView.layer.sublayerTransform = transform;
+}
+
+- (CGSize)intrinsicContentSize
+{
+	return CGSizeMake(UIViewNoIntrinsicMetric, MAX(self.font.lineHeight, self.highlightedFont.lineHeight));
 }
 
 #pragma mark -
@@ -95,12 +107,24 @@
 	}
 }
 
+- (void)setHighlightedFont:(UIFont *)highlightedFont
+{
+	if (![_highlightedFont isEqual:highlightedFont]) {
+		_highlightedFont = highlightedFont;
+		[self initialize];
+	}
+}
+
 #pragma mark -
 
 - (void)reloadData
 {
-    [self.collectionView.collectionViewLayout invalidateLayout];
+	[self invalidateIntrinsicContentSize];
+	[self.collectionView.collectionViewLayout invalidateLayout];
 	[self.collectionView reloadData];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self selectItem:self.selectedItem animated:NO];
+	});
 }
 
 - (CGFloat)offsetForItem:(NSUInteger)item
@@ -177,14 +201,18 @@
 	cell.label.textColor = self.textColor;
 	cell.label.highlightedTextColor = self.highlightedTextColor;
 	cell.label.font = self.font;
-	
+	cell.font = self.font;
+	cell.highlightedFont = self.highlightedFont;
+	NSAssert(self.font, @"Fonts must not be nil");
+	NSAssert(self.highlightedFont, @"Fonts must not be nil");
 	if ([cell.label respondsToSelector:@selector(setAttributedText:)]) {
-		cell.label.attributedText = [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: self.font}];
+		cell.label.attributedText = [[NSAttributedString alloc] initWithString:title
+																	attributes:@{NSFontAttributeName: self.font}];
 	} else {
 		cell.label.text = title;
 	}
 
-	[cell.label sizeToFit];
+	cell.selected = (indexPath.item == self.selectedItem);
 
 	return cell;
 }
@@ -193,12 +221,15 @@
 {
 	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
 	CGSize size;
+	CGSize highlightedSize;
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] > 7.0) {
 		size = [title sizeWithAttributes:@{NSFontAttributeName: self.font}];
+		highlightedSize = [title sizeWithAttributes:@{NSFontAttributeName: self.highlightedFont}];
 	} else {
 		size = [title sizeWithFont:self.font];
+		highlightedSize = [title sizeWithFont:self.highlightedFont];
 	}
-	return CGSizeMake(ceilf(size.width), ceilf(size.height));
+	return CGSizeMake(ceilf(MAX(size.width, highlightedSize.width)), ceilf(MAX(size.height, highlightedSize.height)));
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
@@ -213,9 +244,9 @@
 	CGSize firstSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];
 	NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:number - 1 inSection:section];
 	CGSize lastSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:lastIndexPath];
-	return UIEdgeInsetsMake((collectionView.bounds.size.height - ceilf(self.font.lineHeight)) / 2,
+	return UIEdgeInsetsMake((collectionView.bounds.size.height - ceilf(self.highlightedFont.lineHeight)) / 2,
 							(collectionView.bounds.size.width - firstSize.width) / 2,
-							(collectionView.bounds.size.height - ceilf(self.font.lineHeight)) / 2,
+							(collectionView.bounds.size.height - ceilf(self.highlightedFont.lineHeight)) / 2,
 							(collectionView.bounds.size.width - lastSize.width) / 2);
 }
 
@@ -249,7 +280,8 @@
 
 - (void)initialize
 {
-	self.label = [[UILabel alloc] initWithFrame:self.bounds];
+	self.layer.doubleSided = NO;
+	self.label = [[UILabel alloc] initWithFrame:self.contentView.bounds];
 	self.label.backgroundColor = [UIColor clearColor];
 	self.label.textAlignment = NSTextAlignmentCenter;
 	self.label.textColor = [UIColor grayColor];
@@ -257,6 +289,7 @@
 	self.label.lineBreakMode = NSLineBreakByTruncatingTail;
 	self.label.highlightedTextColor = [UIColor blackColor];
 	self.label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.contentView addSubview:self.label];
 }
 
@@ -276,6 +309,24 @@
 		[self initialize];
 	}
 	return self;
+}
+
+- (void)setSelected:(BOOL)selected
+{
+	[super setSelected:selected];
+
+	CATransition *transition = [CATransition animation];
+	[transition setType:kCATransitionFade];
+	[transition setDuration:0.15];
+	[self.label.layer addAnimation:transition forKey:nil];
+
+	UIFont *font = self.selected ? self.highlightedFont : self.font;
+	if ([self.label respondsToSelector:@selector(setAttributedText:)]) {
+		self.label.attributedText = [[NSAttributedString alloc] initWithString:self.label.attributedText.string
+																	attributes:@{NSFontAttributeName: font}];
+	} else {
+		self.label.font = font;
+	}
 }
 
 @end
@@ -309,7 +360,7 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    return YES;
+	return YES;
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -317,13 +368,15 @@
 	UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForItemAtIndexPath:indexPath];
 
 	CGFloat distance = CGRectGetMidX(attributes.frame) - self.midX;
-	CGFloat currentAngle = self.maxAngle * distance / self.width;
-	CGFloat delta = sinf(currentAngle) * self.width - distance;
+	CGFloat currentAngle = self.maxAngle * distance / self.width / M_PI_2;
 
-	attributes.transform3D = CATransform3DConcat(CATransform3DMakeRotation(currentAngle, 0, 1, 0),
-												 CATransform3DMakeTranslation(delta, 0, 0));
+	CATransform3D transform = CATransform3DIdentity;
+	transform = CATransform3DTranslate(transform, -distance, 0, -self.width);
+	transform = CATransform3DRotate(transform, currentAngle, 0, 1, 0);
+	transform = CATransform3DTranslate(transform, 0, 0, self.width);
+	attributes.transform3D = transform;
 
-	attributes.alpha = (ABS(distance) < self.width);
+	attributes.alpha = (ABS(currentAngle) < self.maxAngle);
 
 	return attributes;
 }
@@ -337,7 +390,7 @@
 			[attributes addObject:[self layoutAttributesForItemAtIndexPath:indexPath]];
 		}
 	}
-    return attributes;
+	return attributes;
 }
 
 @end
