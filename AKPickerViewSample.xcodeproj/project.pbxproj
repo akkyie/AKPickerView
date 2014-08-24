@@ -21,7 +21,6 @@
 		660F9EC218E6E9AC00EE7347 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA418E6E9AC00EE7347 /* UIKit.framework */; };
 		660F9EDB18E6EA4800EE7347 /* AKPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F9EDA18E6EA4800EE7347 /* AKPickerView.m */; };
 		66B25010190018590021F045 /* AKPickerView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 66B2500F190018590021F045 /* AKPickerView.podspec */; };
-		66BEA9E419AA5BB4005F6407 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 66BEA9E319AA5BB4005F6407 /* README.md */; };
 		66FB3E2E18F2A2200024CEDD /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2B18F2A2200024CEDD /* LICENSE */; };
 		66FB3E3018F2A2200024CEDD /* Screenshot.gif in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2D18F2A2200024CEDD /* Screenshot.gif */; };
 /* End PBXBuildFile section */
@@ -255,7 +254,6 @@
 			files = (
 				660F9EB118E6E9AC00EE7347 /* AKAppDelegate.m in Sources */,
 				660F9EB718E6E9AC00EE7347 /* AKViewController.m in Sources */,
-				66BEA9E419AA5BB4005F6407 /* README.md in Sources */,
 				660F9EDB18E6EA4800EE7347 /* AKPickerView.m in Sources */,
 				660F9EAD18E6E9AC00EE7347 /* main.m in Sources */,
 			);
