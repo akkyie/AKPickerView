@@ -24,6 +24,7 @@
 @property (nonatomic, assign) NSUInteger selectedItem;
 - (CGFloat)offsetForItem:(NSUInteger)item;
 - (void)didEndScrolling;
+- (CGSize)sizeForString:(NSString *)string;
 @end
 
 @implementation AKPickerView
@@ -94,7 +95,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-	return CGSizeMake(UIViewNoIntrinsicMetric, MAX(self.font.lineHeight, self.highlightedFont.lineHeight));
+	return CGSizeMake(UIViewNoIntrinsicMetric, [self sizeForString:@"Xy"].height);
 }
 
 #pragma mark -
@@ -113,6 +114,22 @@
 		_highlightedFont = highlightedFont;
 		[self initialize];
 	}
+}
+
+#pragma mark -
+
+- (CGSize)sizeForString:(NSString *)string
+{
+	CGSize size;
+	CGSize highlightedSize;
+#ifdef __IPHONE_7_0
+	size = [string sizeWithAttributes:@{NSFontAttributeName: self.font}];
+	highlightedSize = [string sizeWithAttributes:@{NSFontAttributeName: self.highlightedFont}];
+#else
+	size = [string sizeWithFont:self.font];
+	highlightedSize = [string sizeWithFont:self.highlightedFont];
+#endif
+	return CGSizeMake(ceilf(MAX(size.width, highlightedSize.width)), ceilf(MAX(size.height, highlightedSize.height)));
 }
 
 #pragma mark -
@@ -141,8 +158,8 @@
 	NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
 	CGSize selectedSize = [self.collectionView cellForItemAtIndexPath:selectedIndexPath].bounds.size;
 	offset -= (firstSize.width - selectedSize.width) / 2;
-
 	offset += self.interitemSpacing * item;
+
 	return offset;
 }
 
@@ -203,8 +220,6 @@
 	cell.label.font = self.font;
 	cell.font = self.font;
 	cell.highlightedFont = self.highlightedFont;
-	NSAssert(self.font, @"Fonts must not be nil");
-	NSAssert(self.highlightedFont, @"Fonts must not be nil");
 	if ([cell.label respondsToSelector:@selector(setAttributedText:)]) {
 		cell.label.attributedText = [[NSAttributedString alloc] initWithString:title
 																	attributes:@{NSFontAttributeName: self.font}];
@@ -220,16 +235,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
-	CGSize size;
-	CGSize highlightedSize;
-	if ([[[UIDevice currentDevice] systemVersion] floatValue] > 7.0) {
-		size = [title sizeWithAttributes:@{NSFontAttributeName: self.font}];
-		highlightedSize = [title sizeWithAttributes:@{NSFontAttributeName: self.highlightedFont}];
-	} else {
-		size = [title sizeWithFont:self.font];
-		highlightedSize = [title sizeWithFont:self.highlightedFont];
-	}
-	return CGSizeMake(ceilf(MAX(size.width, highlightedSize.width)), ceilf(MAX(size.height, highlightedSize.height)));
+	return [self sizeForString:title];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
