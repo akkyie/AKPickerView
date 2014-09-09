@@ -79,6 +79,11 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	self.collectionView.delegate = nil;
+}
+
 #pragma mark -
 
 - (void)layoutSubviews
