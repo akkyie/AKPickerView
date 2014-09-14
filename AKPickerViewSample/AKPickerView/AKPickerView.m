@@ -100,7 +100,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-	return CGSizeMake(UIViewNoIntrinsicMetric, [self sizeForString:@"Xy"].height);
+	return CGSizeMake(UIViewNoIntrinsicMetric, MAX(self.font.lineHeight, self.highlightedFont.lineHeight));
 }
 
 #pragma mark -
