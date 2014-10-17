@@ -163,7 +163,6 @@
 	NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
 	CGSize selectedSize = [self.collectionView cellForItemAtIndexPath:selectedIndexPath].bounds.size;
 	offset -= (firstSize.width - selectedSize.width) / 2;
-	offset += self.interitemSpacing * item;
 
 	return offset;
 }
@@ -240,12 +239,12 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
-	return [self sizeForString:title];
-}
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-	return self.interitemSpacing;
+	CGSize itemSize = [self sizeForString:title];
+	itemSize.height = self.frame.size.height;
+	itemSize.width += self.interitemSpacing * 2;
+
+	return itemSize;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -255,9 +254,9 @@
 	CGSize firstSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];
 	NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:number - 1 inSection:section];
 	CGSize lastSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:lastIndexPath];
-	return UIEdgeInsetsMake((collectionView.bounds.size.height - ceilf(self.highlightedFont.lineHeight)) / 2,
+	return UIEdgeInsetsMake(0,
 							(collectionView.bounds.size.width - firstSize.width) / 2,
-							(collectionView.bounds.size.height - ceilf(self.highlightedFont.lineHeight)) / 2,
+							0,
 							(collectionView.bounds.size.width - lastSize.width) / 2);
 }
 
