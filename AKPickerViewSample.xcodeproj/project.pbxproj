@@ -16,24 +16,11 @@
 		660F9EB418E6E9AC00EE7347 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 660F9EB218E6E9AC00EE7347 /* Main.storyboard */; };
 		660F9EB718E6E9AC00EE7347 /* AKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F9EB618E6E9AC00EE7347 /* AKViewController.m */; };
 		660F9EB918E6E9AC00EE7347 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 660F9EB818E6E9AC00EE7347 /* Images.xcassets */; };
-		660F9EC018E6E9AC00EE7347 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EBF18E6E9AC00EE7347 /* XCTest.framework */; };
-		660F9EC118E6E9AC00EE7347 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA018E6E9AC00EE7347 /* Foundation.framework */; };
-		660F9EC218E6E9AC00EE7347 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA418E6E9AC00EE7347 /* UIKit.framework */; };
 		660F9EDB18E6EA4800EE7347 /* AKPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F9EDA18E6EA4800EE7347 /* AKPickerView.m */; };
 		66B25010190018590021F045 /* AKPickerView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 66B2500F190018590021F045 /* AKPickerView.podspec */; };
 		66FB3E2E18F2A2200024CEDD /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2B18F2A2200024CEDD /* LICENSE */; };
 		66FB3E3018F2A2200024CEDD /* Screenshot.gif in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2D18F2A2200024CEDD /* Screenshot.gif */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		660F9EC318E6E9AC00EE7347 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 660F9E9518E6E9AC00EE7347 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 660F9E9C18E6E9AC00EE7347;
-			remoteInfo = AKPickerViewSample;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		660F9E9D18E6E9AC00EE7347 /* AKPickerViewSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AKPickerViewSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,7 +37,6 @@
 		660F9EB518E6E9AC00EE7347 /* AKViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKViewController.h; sourceTree = "<group>"; };
 		660F9EB618E6E9AC00EE7347 /* AKViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKViewController.m; sourceTree = "<group>"; };
 		660F9EB818E6E9AC00EE7347 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		660F9EBE18E6E9AC00EE7347 /* AKPickerViewSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKPickerViewSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		660F9EBF18E6E9AC00EE7347 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		660F9ED918E6EA4800EE7347 /* AKPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPickerView.h; sourceTree = "<group>"; };
 		660F9EDA18E6EA4800EE7347 /* AKPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPickerView.m; sourceTree = "<group>"; };
@@ -68,16 +54,6 @@
 				660F9EA318E6E9AC00EE7347 /* CoreGraphics.framework in Frameworks */,
 				660F9EA518E6E9AC00EE7347 /* UIKit.framework in Frameworks */,
 				660F9EA118E6E9AC00EE7347 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		660F9EBB18E6E9AC00EE7347 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				660F9EC018E6E9AC00EE7347 /* XCTest.framework in Frameworks */,
-				660F9EC218E6E9AC00EE7347 /* UIKit.framework in Frameworks */,
-				660F9EC118E6E9AC00EE7347 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,7 +77,6 @@
 			isa = PBXGroup;
 			children = (
 				660F9E9D18E6E9AC00EE7347 /* AKPickerViewSample.app */,
-				660F9EBE18E6E9AC00EE7347 /* AKPickerViewSampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -172,24 +147,6 @@
 			productReference = 660F9E9D18E6E9AC00EE7347 /* AKPickerViewSample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		660F9EBD18E6E9AC00EE7347 /* AKPickerViewSampleTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 660F9ED218E6E9AC00EE7347 /* Build configuration list for PBXNativeTarget "AKPickerViewSampleTests" */;
-			buildPhases = (
-				660F9EBA18E6E9AC00EE7347 /* Sources */,
-				660F9EBB18E6E9AC00EE7347 /* Frameworks */,
-				660F9EBC18E6E9AC00EE7347 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				660F9EC418E6E9AC00EE7347 /* PBXTargetDependency */,
-			);
-			name = AKPickerViewSampleTests;
-			productName = AKPickerViewSampleTests;
-			productReference = 660F9EBE18E6E9AC00EE7347 /* AKPickerViewSampleTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -199,11 +156,6 @@
 				CLASSPREFIX = AK;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Akkyie Y";
-				TargetAttributes = {
-					660F9EBD18E6E9AC00EE7347 = {
-						TestTargetID = 660F9E9C18E6E9AC00EE7347;
-					};
-				};
 			};
 			buildConfigurationList = 660F9E9818E6E9AC00EE7347 /* Build configuration list for PBXProject "AKPickerViewSample" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -219,7 +171,6 @@
 			projectRoot = "";
 			targets = (
 				660F9E9C18E6E9AC00EE7347 /* AKPickerViewSample */,
-				660F9EBD18E6E9AC00EE7347 /* AKPickerViewSampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -238,13 +189,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		660F9EBC18E6E9AC00EE7347 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -259,22 +203,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		660F9EBA18E6E9AC00EE7347 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		660F9EC418E6E9AC00EE7347 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 660F9E9C18E6E9AC00EE7347 /* AKPickerViewSample */;
-			targetProxy = 660F9EC318E6E9AC00EE7347 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		660F9EA918E6E9AC00EE7347 /* InfoPlist.strings */ = {
@@ -395,46 +324,6 @@
 			};
 			name = Release;
 		};
-		660F9ED318E6E9AC00EE7347 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AKPickerViewSample.app/AKPickerViewSample";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AKPickerViewSample/AKPickerViewSample-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "AKPickerViewSampleTests/AKPickerViewSampleTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		660F9ED418E6E9AC00EE7347 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AKPickerViewSample.app/AKPickerViewSample";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AKPickerViewSample/AKPickerViewSample-Prefix.pch";
-				INFOPLIST_FILE = "AKPickerViewSampleTests/AKPickerViewSampleTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -452,15 +341,6 @@
 			buildConfigurations = (
 				660F9ED018E6E9AC00EE7347 /* Debug */,
 				660F9ED118E6E9AC00EE7347 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		660F9ED218E6E9AC00EE7347 /* Build configuration list for PBXNativeTarget "AKPickerViewSampleTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				660F9ED318E6E9AC00EE7347 /* Debug */,
-				660F9ED418E6E9AC00EE7347 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
