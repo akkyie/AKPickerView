@@ -334,11 +334,13 @@
 	[self.label.layer addAnimation:transition forKey:nil];
 
 	UIFont *font = self.selected ? self.highlightedFont : self.font;
-	if ([self.label respondsToSelector:@selector(setAttributedText:)]) {
-		self.label.attributedText = [[NSAttributedString alloc] initWithString:self.label.attributedText.string
-																	attributes:@{NSFontAttributeName: font}];
-	} else {
-		self.label.font = font;
+	if(font != nil) {
+		if ([self.label respondsToSelector:@selector(setAttributedText:)]) {
+			self.label.attributedText = [[NSAttributedString alloc] initWithString:self.label.attributedText.string
+																		attributes:@{NSFontAttributeName: font}];
+		} else {
+			self.label.font = font;
+		}
 	}
 }
 
