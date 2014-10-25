@@ -224,13 +224,7 @@
 	cell.label.font = self.font;
 	cell.font = self.font;
 	cell.highlightedFont = self.highlightedFont;
-	if ([cell.label respondsToSelector:@selector(setAttributedText:)]) {
-		cell.label.attributedText = [[NSAttributedString alloc] initWithString:title
-																	attributes:@{NSFontAttributeName: self.font}];
-	} else {
-		cell.label.text = title;
-	}
-
+	cell.label.text = title;
 	cell.selected = (indexPath.item == self.selectedItem);
 
 	return cell;
@@ -332,14 +326,7 @@
 	[transition setType:kCATransitionFade];
 	[transition setDuration:0.15];
 	[self.label.layer addAnimation:transition forKey:nil];
-
-	UIFont *font = self.selected ? self.highlightedFont : self.font;
-	if ([self.label respondsToSelector:@selector(setAttributedText:)]) {
-		self.label.attributedText = [[NSAttributedString alloc] initWithString:self.label.attributedText.string
-																	attributes:@{NSFontAttributeName: font}];
-	} else {
-		self.label.font = font;
-	}
+	self.label.font = self.selected ? self.highlightedFont : self.font;
 }
 
 @end
