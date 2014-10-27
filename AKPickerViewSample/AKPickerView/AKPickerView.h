@@ -19,14 +19,13 @@
 @end
 
 @interface AKPickerView : UIView
-
-@property (nonatomic, weak) id <AKPickerViewDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id <AKPickerViewDelegate> delegate;
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, strong) UIFont *highlightedFont;
-@property (nonatomic, strong) UIColor *textColor;
-@property (nonatomic, strong) UIColor *highlightedTextColor;
-@property (nonatomic, assign) CGFloat interitemSpacing;
-@property (nonatomic, assign) CGFloat fisheyeFactor; // 0...1; slight value recommended such as 0.0001
+@property (nonatomic, strong) IBInspectable UIColor *textColor;
+@property (nonatomic, strong) IBInspectable UIColor *highlightedTextColor;
+@property (nonatomic, assign) IBInspectable CGFloat interitemSpacing;
+@property (nonatomic, assign) IBInspectable CGFloat fisheyeFactor; // 0...1; slight value recommended such as 0.0001
 @property (nonatomic, assign, readonly) NSUInteger selectedItem;
 
 - (void)reloadData;

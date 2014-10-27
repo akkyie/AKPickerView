@@ -67,6 +67,7 @@
 	if (self) {
 		[self initialize];
 	}
+
 	return self;
 }
 
@@ -79,10 +80,9 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	self.collectionView.delegate = nil;
-}
+#pragma mark - Live Render only
+//-(void)prepareForInterfaceBuilder{
+//}
 
 #pragma mark -
 
@@ -100,7 +100,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-	return CGSizeMake(UIViewNoIntrinsicMetric, MAX(self.font.lineHeight, self.highlightedFont.lineHeight));
+	return CGSizeMake(UIViewNoIntrinsicMetric, [self sizeForString:@"Xy"].height);
 }
 
 #pragma mark -
@@ -163,6 +163,7 @@
 	NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
 	CGSize selectedSize = [self.collectionView cellForItemAtIndexPath:selectedIndexPath].bounds.size;
 	offset -= (firstSize.width - selectedSize.width) / 2;
+	offset += self.interitemSpacing * item;
 
 	return offset;
 }
@@ -176,6 +177,8 @@
 
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated
 {
+	NSLog(@"select=%d", item);
+
 	[self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
 									  animated:animated
 								scrollPosition:UICollectionViewScrollPositionNone];
@@ -233,17 +236,12 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
-	return CGSizeMake([self sizeForString:title].width + self.interitemSpacing, collectionView.bounds.size.height);
+	return [self sizeForString:title];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-	return 0.0;
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-{
-	return 0.0;
+	return self.interitemSpacing;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -253,8 +251,10 @@
 	CGSize firstSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];
 	NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:number - 1 inSection:section];
 	CGSize lastSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:lastIndexPath];
-	return UIEdgeInsetsMake(0, (collectionView.bounds.size.width - firstSize.width) / 2,
-							0, (collectionView.bounds.size.width - lastSize.width) / 2);
+	return UIEdgeInsetsMake((collectionView.bounds.size.height - ceilf(self.highlightedFont.lineHeight)) / 2,
+							(collectionView.bounds.size.width - firstSize.width) / 2,
+							(collectionView.bounds.size.height - ceilf(self.highlightedFont.lineHeight)) / 2,
+							(collectionView.bounds.size.width - lastSize.width) / 2);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
