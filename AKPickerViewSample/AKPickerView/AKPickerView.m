@@ -19,7 +19,12 @@
 @interface AKCollectionViewLayout : UICollectionViewFlowLayout
 @end
 
+#if TARGET_INTERFACE_BUILDER
+@interface AKPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, AKPickerViewDelegate>
+#else
 @interface AKPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+#endif
+
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, assign) NSUInteger selectedItem;
 - (CGFloat)offsetForItem:(NSUInteger)item;
@@ -81,11 +86,21 @@
 }
 
 #pragma mark - Live Render only
-//-(void)prepareForInterfaceBuilder{
-//}
+#if TARGET_INTERFACE_BUILDER
+-(void)prepareForInterfaceBuilder {
+	self.delegate = self;
+}
+
+- (NSUInteger)numberOfItemsInPickerView:(AKPickerView *)pickerView {
+	return 10;
+}
+
+- (NSString *)pickerView:(AKPickerView *)pickerView titleForItem:(NSInteger)item {
+	return [NSString stringWithFormat:@"%d", item];
+}
+#endif
 
 #pragma mark -
-
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
@@ -177,8 +192,6 @@
 
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated
 {
-	NSLog(@"select=%d", item);
-
 	[self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
 									  animated:animated
 								scrollPosition:UICollectionViewScrollPositionNone];
