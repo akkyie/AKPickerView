@@ -18,7 +18,7 @@
 - (void)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item;
 @end
 
-@interface AKPickerView : UIView
+IB_DESIGNABLE @interface AKPickerView : UIView
 @property (nonatomic, weak) IBOutlet id <AKPickerViewDelegate> delegate;
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, strong) UIFont *highlightedFont;
