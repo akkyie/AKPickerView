@@ -19,7 +19,12 @@
 @interface AKCollectionViewLayout : UICollectionViewFlowLayout
 @end
 
+#if TARGET_INTERFACE_BUILDER
+@interface AKPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, AKPickerViewDelegate>
+#else
 @interface AKPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+#endif
+
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, assign) NSUInteger selectedItem;
 - (CGFloat)offsetForItem:(NSUInteger)item;
@@ -67,6 +72,7 @@
 	if (self) {
 		[self initialize];
 	}
+
 	return self;
 }
 
@@ -79,13 +85,22 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	self.collectionView.delegate = nil;
+#pragma mark - Live Render only
+#if TARGET_INTERFACE_BUILDER
+-(void)prepareForInterfaceBuilder {
+	self.delegate = self;
 }
 
-#pragma mark -
+- (NSUInteger)numberOfItemsInPickerView:(AKPickerView *)pickerView {
+	return 10;
+}
 
+- (NSString *)pickerView:(AKPickerView *)pickerView titleForItem:(NSInteger)item {
+	return [NSString stringWithFormat:@"%d", item];
+}
+#endif
+
+#pragma mark -
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
@@ -100,7 +115,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-	return CGSizeMake(UIViewNoIntrinsicMetric, MAX(self.font.lineHeight, self.highlightedFont.lineHeight));
+	return CGSizeMake(UIViewNoIntrinsicMetric, [self sizeForString:@"Xy"].height);
 }
 
 #pragma mark -
@@ -163,6 +178,7 @@
 	NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
 	CGSize selectedSize = [self.collectionView cellForItemAtIndexPath:selectedIndexPath].bounds.size;
 	offset -= (firstSize.width - selectedSize.width) / 2;
+	offset += self.interitemSpacing * item;
 
 	return offset;
 }
@@ -224,13 +240,7 @@
 	cell.label.font = self.font;
 	cell.font = self.font;
 	cell.highlightedFont = self.highlightedFont;
-	if ([cell.label respondsToSelector:@selector(setAttributedText:)]) {
-		cell.label.attributedText = [[NSAttributedString alloc] initWithString:title
-																	attributes:@{NSFontAttributeName: self.font}];
-	} else {
-		cell.label.text = title;
-	}
-
+	cell.label.text = title;
 	cell.selected = (indexPath.item == self.selectedItem);
 
 	return cell;
@@ -239,17 +249,12 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
-	return CGSizeMake([self sizeForString:title].width + self.interitemSpacing, collectionView.bounds.size.height);
+	return [self sizeForString:title];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-	return 0.0;
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-{
-	return 0.0;
+	return self.interitemSpacing;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -259,8 +264,10 @@
 	CGSize firstSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];
 	NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:number - 1 inSection:section];
 	CGSize lastSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:lastIndexPath];
-	return UIEdgeInsetsMake(0, (collectionView.bounds.size.width - firstSize.width) / 2,
-							0, (collectionView.bounds.size.width - lastSize.width) / 2);
+	return UIEdgeInsetsMake((collectionView.bounds.size.height - ceilf(self.highlightedFont.lineHeight)) / 2,
+							(collectionView.bounds.size.width - firstSize.width) / 2,
+							(collectionView.bounds.size.height - ceilf(self.highlightedFont.lineHeight)) / 2,
+							(collectionView.bounds.size.width - lastSize.width) / 2);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -332,14 +339,7 @@
 	[transition setType:kCATransitionFade];
 	[transition setDuration:0.15];
 	[self.label.layer addAnimation:transition forKey:nil];
-
-	UIFont *font = self.selected ? self.highlightedFont : self.font;
-	if ([self.label respondsToSelector:@selector(setAttributedText:)]) {
-		self.label.attributedText = [[NSAttributedString alloc] initWithString:self.label.attributedText.string
-																	attributes:@{NSFontAttributeName: font}];
-	} else {
-		self.label.font = font;
-	}
+	self.label.font = self.selected ? self.highlightedFont : self.font;
 }
 
 @end
