@@ -30,6 +30,7 @@
 	self.pickerView.highlightedFont = [UIFont fontWithName:@"HelveticaNeue" size:20];
 	self.pickerView.interitemSpacing = 20.0;
 	self.pickerView.fisheyeFactor = 0.001;
+	self.pickerView.pickerViewStyle = AKPickerViewStyle3D;
 
 	self.titles = @[@"Tokyo",
 					@"Kanagawa",

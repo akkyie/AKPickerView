@@ -10,6 +10,12 @@
 
 #import <Availability.h>
 
+@class AKCollectionViewLayout;
+
+@protocol AKCollectionViewLayoutDelegate <NSObject>
+- (AKPickerViewStyle)pickerViewStyleForCollectionViewLayout:(AKCollectionViewLayout *)layout;
+@end
+
 @interface AKCollectionViewCell : UICollectionViewCell
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UIFont *font;
@@ -17,9 +23,10 @@
 @end
 
 @interface AKCollectionViewLayout : UICollectionViewFlowLayout
+@property (nonatomic, assign) id <AKCollectionViewLayoutDelegate> delegate;
 @end
 
-@interface AKPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface AKPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, AKCollectionViewLayoutDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, assign) NSUInteger selectedItem;
 - (CGFloat)offsetForItem:(NSUInteger)item;
@@ -35,10 +42,12 @@
 	self.highlightedFont = self.highlightedFont ?: [UIFont fontWithName:@"HelveticaNeue" size:20];
 	self.textColor = self.textColor ?: [UIColor darkGrayColor];
 	self.highlightedTextColor = self.highlightedTextColor ?: [UIColor blackColor];
+	self.pickerViewStyle = self.pickerViewStyle ?: AKPickerViewStyle3D;
 
 	[self.collectionView removeFromSuperview];
 	self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
 											 collectionViewLayout:[AKCollectionViewLayout new]];
+	((AKCollectionViewLayout *)self.collectionView.collectionViewLayout).delegate = self;
 	self.collectionView.showsHorizontalScrollIndicator = NO;
 	self.collectionView.backgroundColor = [UIColor clearColor];
 	self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -105,24 +114,6 @@
 
 #pragma mark -
 
-- (void)setFont:(UIFont *)font
-{
-	if (![_font isEqual:font]) {
-		_font = font;
-		[self initialize];
-	}
-}
-
-- (void)setHighlightedFont:(UIFont *)highlightedFont
-{
-	if (![_highlightedFont isEqual:highlightedFont]) {
-		_highlightedFont = highlightedFont;
-		[self initialize];
-	}
-}
-
-#pragma mark -
-
 - (CGSize)sizeForString:(NSString *)string
 {
 	CGSize size;
@@ -169,9 +160,20 @@
 
 - (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated
 {
-	[self.collectionView setContentOffset:CGPointMake([self offsetForItem:item],
-													  self.collectionView.contentOffset.y)
-								 animated:animated];
+	switch (self.pickerViewStyle) {
+		case AKPickerViewStyleFlat: {
+			[self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
+										atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+												animated:animated];
+			break;
+		}
+		case AKPickerViewStyle3D: {
+			[self.collectionView setContentOffset:CGPointMake([self offsetForItem:item], self.collectionView.contentOffset.y)
+										 animated:animated];
+			break;
+		}
+		default: break;
+	}
 }
 
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated
@@ -189,15 +191,27 @@
 
 - (void)didEndScrolling
 {
-	if ([self.delegate numberOfItemsInPickerView:self]) {
-		for (NSUInteger i = 0; i < [self collectionView:self.collectionView numberOfItemsInSection:0]; i++) {
-			NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-			AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-			if ([self offsetForItem:i] + cell.bounds.size.width / 2 > self.collectionView.contentOffset.x) {
-				[self selectItem:i animated:YES];
-				break;
-			}
+	switch (self.pickerViewStyle) {
+		case AKPickerViewStyleFlat: {
+			CGPoint center = [self convertPoint:self.collectionView.center toView:self.collectionView];
+			NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:center];
+			[self selectItem:indexPath.item animated:YES];
+			break;
 		}
+		case AKPickerViewStyle3D: {
+			if ([self.delegate numberOfItemsInPickerView:self]) {
+				for (NSUInteger i = 0; i < [self collectionView:self.collectionView numberOfItemsInSection:0]; i++) {
+					NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+					AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+					if ([self offsetForItem:i] + cell.bounds.size.width / 2 > self.collectionView.contentOffset.x) {
+						[self selectItem:i animated:YES];
+						break;
+					}
+				}
+			}
+			break;
+		}
+		default: break;
 	}
 }
 
@@ -224,13 +238,7 @@
 	cell.label.font = self.font;
 	cell.font = self.font;
 	cell.highlightedFont = self.highlightedFont;
-	if ([cell.label respondsToSelector:@selector(setAttributedText:)]) {
-		cell.label.attributedText = [[NSAttributedString alloc] initWithString:title
-																	attributes:@{NSFontAttributeName: self.font}];
-	} else {
-		cell.label.text = title;
-	}
-
+	cell.label.text = title;
 	cell.selected = (indexPath.item == self.selectedItem);
 
 	return cell;
@@ -287,6 +295,13 @@
 	[CATransaction commit];
 }
 
+#pragma mark -
+
+- (AKPickerViewStyle)pickerViewStyleForCollectionViewLayout:(AKCollectionViewLayout *)layout
+{
+	return self.pickerViewStyle;
+}
+
 @end
 
 @implementation AKCollectionViewCell
@@ -333,13 +348,7 @@
 	[transition setDuration:0.15];
 	[self.label.layer addAnimation:transition forKey:nil];
 
-	UIFont *font = self.selected ? self.highlightedFont : self.font;
-	if ([self.label respondsToSelector:@selector(setAttributedText:)]) {
-		self.label.attributedText = [[NSAttributedString alloc] initWithString:self.label.attributedText.string
-																	attributes:@{NSFontAttributeName: font}];
-	} else {
-		self.label.font = font;
-	}
+	self.label.font = self.selected ? self.highlightedFont : self.font;
 }
 
 @end
@@ -379,31 +388,47 @@
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForItemAtIndexPath:indexPath];
-
-	CGFloat distance = CGRectGetMidX(attributes.frame) - self.midX;
-	CGFloat currentAngle = self.maxAngle * distance / self.width / M_PI_2;
-
-	CATransform3D transform = CATransform3DIdentity;
-	transform = CATransform3DTranslate(transform, -distance, 0, -self.width);
-	transform = CATransform3DRotate(transform, currentAngle, 0, 1, 0);
-	transform = CATransform3DTranslate(transform, 0, 0, self.width);
-	attributes.transform3D = transform;
-
-	attributes.alpha = (ABS(currentAngle) < self.maxAngle);
-
-	return attributes;
+	switch ([self.delegate pickerViewStyleForCollectionViewLayout:self]) {
+		case AKPickerViewStyleFlat: {
+			return attributes;
+			break;
+		}
+		case AKPickerViewStyle3D: {
+			CGFloat distance = CGRectGetMidX(attributes.frame) - self.midX;
+			CGFloat currentAngle = self.maxAngle * distance / self.width / M_PI_2;
+			CATransform3D transform = CATransform3DIdentity;
+			transform = CATransform3DTranslate(transform, -distance, 0, -self.width);
+			transform = CATransform3DRotate(transform, currentAngle, 0, 1, 0);
+			transform = CATransform3DTranslate(transform, 0, 0, self.width);
+			attributes.transform3D = transform;
+			attributes.alpha = (ABS(currentAngle) < self.maxAngle);
+			return attributes;
+			break;
+		}
+		default: return nil; break;
+	}
 }
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-	NSMutableArray *attributes = [NSMutableArray array];
-	if ([self.collectionView numberOfSections]) {
-		for (NSInteger i = 0; i < [self.collectionView numberOfItemsInSection:0]; i++) {
-			NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-			[attributes addObject:[self layoutAttributesForItemAtIndexPath:indexPath]];
+	switch ([self.delegate pickerViewStyleForCollectionViewLayout:self]) {
+		case AKPickerViewStyleFlat: {
+			return [super layoutAttributesForElementsInRect:rect];
+			break;
 		}
+		case AKPickerViewStyle3D: {
+			NSMutableArray *attributes = [NSMutableArray array];
+			if ([self.collectionView numberOfSections]) {
+				for (NSInteger i = 0; i < [self.collectionView numberOfItemsInSection:0]; i++) {
+					NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+					[attributes addObject:[self layoutAttributesForItemAtIndexPath:indexPath]];
+				}
+			}
+			return attributes;
+			break;
+		}
+		default: return nil; break;
 	}
-	return attributes;
 }
 
 @end
