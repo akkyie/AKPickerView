@@ -103,6 +103,11 @@
 	return CGSizeMake(UIViewNoIntrinsicMetric, MAX(self.font.lineHeight, self.highlightedFont.lineHeight));
 }
 
+- (CGPoint)contentOffset
+{
+    return self.collectionView.contentOffset;
+}
+
 #pragma mark -
 
 - (void)setFont:(UIFont *)font
@@ -268,6 +273,8 @@
 	[self selectItem:indexPath.item animated:YES];
 }
 
+#pragma mark - Scroll View Delegate
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
 	[self didEndScrolling];
@@ -285,7 +292,13 @@
 					 forKey:kCATransactionDisableActions];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 	[CATransaction commit];
+    
+    if ([self.delegate respondsToSelector:@selector(pickerViewDidScroll:)]) {
+        [self.delegate pickerViewDidScroll:self];
+    }
 }
+
+
 
 @end
 
