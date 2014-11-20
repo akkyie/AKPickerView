@@ -194,7 +194,7 @@
 
 - (void)didEndScrolling
 {
-	if ([self.delegate numberOfItemsInPickerView:self]) {
+	if ([self.dataSource numberOfItemsInPickerView:self]) {
 		for (NSUInteger i = 0; i < [self collectionView:self.collectionView numberOfItemsInSection:0]; i++) {
 			NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
 			AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
@@ -210,17 +210,17 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-	return ([self.delegate numberOfItemsInPickerView:self] > 0);
+	return ([self.dataSource numberOfItemsInPickerView:self] > 0);
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-	return [self.delegate numberOfItemsInPickerView:self];
+	return [self.dataSource numberOfItemsInPickerView:self];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
+	NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
 
 	AKCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([AKCollectionViewCell class])
 																		   forIndexPath:indexPath];
@@ -243,7 +243,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
+	NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
 	return CGSizeMake([self sizeForString:title].width + self.interitemSpacing, collectionView.bounds.size.height);
 }
 

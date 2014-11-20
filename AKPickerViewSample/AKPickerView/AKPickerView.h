@@ -10,10 +10,13 @@
 
 @class AKPickerView;
 
-@protocol AKPickerViewDelegate <NSObject>
+@protocol AKPickerViewDataSource <NSObject>
 @required
 - (NSUInteger)numberOfItemsInPickerView:(AKPickerView *)pickerView;
 - (NSString *)pickerView:(AKPickerView *)pickerView titleForItem:(NSInteger)item;
+@end
+
+@protocol AKPickerViewDelegate <NSObject>
 @optional
 - (void)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item;
 - (void)pickerViewDidScroll:(AKPickerView *)pickerView;
@@ -21,6 +24,7 @@
 
 @interface AKPickerView : UIView
 
+@property (nonatomic, weak) id <AKPickerViewDataSource> dataSource;
 @property (nonatomic, weak) id <AKPickerViewDelegate> delegate;
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, strong) UIFont *highlightedFont;
