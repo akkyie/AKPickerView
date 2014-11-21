@@ -330,10 +330,6 @@
 					 forKey:kCATransactionDisableActions];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 	[CATransaction commit];
-    
-    if ([self.delegate respondsToSelector:@selector(pickerViewDidScroll:)]) {
-        [self.delegate pickerViewDidScroll:self];
-    }
 }
 
 #pragma mark -
