@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, AKPickerViewStyle) {
 - (NSString *)pickerView:(AKPickerView *)pickerView titleForItem:(NSInteger)item;
 @end
 
-@protocol AKPickerViewDelegate <NSObject>
+@protocol AKPickerViewDelegate <UIScrollViewDelegate>
 @optional
 - (void)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item;
 @end
@@ -30,7 +30,6 @@ typedef NS_ENUM(NSInteger, AKPickerViewStyle) {
 
 @property (nonatomic, weak) id <AKPickerViewDataSource> dataSource;
 @property (nonatomic, weak) id <AKPickerViewDelegate> delegate;
-@property (nonatomic, weak) id <UIScrollViewDelegate> scrollViewDelegate;
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, strong) UIFont *highlightedFont;
 @property (nonatomic, strong) UIColor *textColor;

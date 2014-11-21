@@ -65,7 +65,7 @@
 
 	self.intercepter = [AKPickerViewDelegateIntercepter new];
 	self.intercepter.pickerView = self;
-	self.intercepter.delegate = self.scrollViewDelegate;
+	self.intercepter.delegate = self.delegate;
 	self.collectionView.delegate = self.intercepter;
 
 	CAGradientLayer *maskLayer = [CAGradientLayer layer];
@@ -129,11 +129,11 @@
 
 #pragma mark -
 
-- (void)setScrollViewDelegate:(id<UIScrollViewDelegate>)scrollViewDelegate
+- (void)setDelegate:(id<AKPickerViewDelegate>)delegate
 {
-	if (![_scrollViewDelegate isEqual:scrollViewDelegate]) {
-		_scrollViewDelegate = scrollViewDelegate;
-		self.intercepter.delegate = scrollViewDelegate;
+	if (![_delegate isEqual:delegate]) {
+		_delegate = delegate;
+		self.intercepter.delegate = delegate;
 	}
 }
 
@@ -305,8 +305,8 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-	if ([self.scrollViewDelegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
-		[self.scrollViewDelegate scrollViewDidEndDecelerating:scrollView];
+	if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
+		[self.delegate scrollViewDidEndDecelerating:scrollView];
 
 
 	[self didEndScrolling];
@@ -314,16 +314,16 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-	if ([self.scrollViewDelegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
-		[self.scrollViewDelegate scrollViewDidScroll:scrollView];
+	if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
+		[self.delegate scrollViewDidScroll:scrollView];
 
 	if (!decelerate) [self didEndScrolling];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-	if ([self.scrollViewDelegate respondsToSelector:@selector(scrollViewDidScroll:)])
-		[self.scrollViewDelegate scrollViewDidScroll:scrollView];
+	if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+		[self.delegate scrollViewDidScroll:scrollView];
 
 	[CATransaction begin];
 	[CATransaction setValue:(id)kCFBooleanTrue
