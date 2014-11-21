@@ -122,6 +122,11 @@
 	return CGSizeMake(UIViewNoIntrinsicMetric, MAX(self.font.lineHeight, self.highlightedFont.lineHeight));
 }
 
+- (CGPoint)contentOffset
+{
+    return self.collectionView.contentOffset;
+}
+
 #pragma mark -
 
 - (void)setScrollViewDelegate:(id<UIScrollViewDelegate>)scrollViewDelegate
@@ -219,7 +224,7 @@
 			break;
 		}
 		case AKPickerViewStyle3D: {
-			if ([self.delegate numberOfItemsInPickerView:self]) {
+			if ([self.dataSource numberOfItemsInPickerView:self]) {
 				for (NSUInteger i = 0; i < [self collectionView:self.collectionView numberOfItemsInSection:0]; i++) {
 					NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
 					AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
@@ -239,17 +244,17 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-	return ([self.delegate numberOfItemsInPickerView:self] > 0);
+	return ([self.dataSource numberOfItemsInPickerView:self] > 0);
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-	return [self.delegate numberOfItemsInPickerView:self];
+	return [self.dataSource numberOfItemsInPickerView:self];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
+	NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
 
 	AKCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([AKCollectionViewCell class])
 																		   forIndexPath:indexPath];
@@ -266,7 +271,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
+	NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
 	return CGSizeMake([self sizeForString:title].width + self.interitemSpacing, collectionView.bounds.size.height);
 }
 
@@ -296,6 +301,8 @@
 	[self selectItem:indexPath.item animated:YES];
 }
 
+#pragma mark -
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
 	if ([self.scrollViewDelegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
@@ -323,6 +330,10 @@
 					 forKey:kCATransactionDisableActions];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 	[CATransaction commit];
+    
+    if ([self.delegate respondsToSelector:@selector(pickerViewDidScroll:)]) {
+        [self.delegate pickerViewDidScroll:self];
+    }
 }
 
 #pragma mark -
