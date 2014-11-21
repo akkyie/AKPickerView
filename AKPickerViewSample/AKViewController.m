@@ -10,7 +10,7 @@
 
 #import "AKPickerView.h"
 
-@interface AKViewController () <AKPickerViewDelegate>
+@interface AKViewController () <AKPickerViewDataSource, AKPickerViewDelegate>
 @property (nonatomic, strong) AKPickerView *pickerView;
 @property (nonatomic, strong) NSArray *titles;
 @end
@@ -23,6 +23,7 @@
 
 	self.pickerView = [[AKPickerView alloc] initWithFrame:self.view.bounds];
 	self.pickerView.delegate = self;
+	self.pickerView.dataSource = self;
 	self.pickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:self.pickerView];
 
