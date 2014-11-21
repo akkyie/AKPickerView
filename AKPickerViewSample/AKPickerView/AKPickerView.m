@@ -26,9 +26,15 @@
 @property (nonatomic, assign) id <AKCollectionViewLayoutDelegate> delegate;
 @end
 
+@interface AKPickerViewDelegateIntercepter : NSObject <UICollectionViewDelegate>
+@property (nonatomic, weak) AKPickerView *pickerView;
+@property (nonatomic, weak) id <UIScrollViewDelegate> delegate;
+@end
+
 @interface AKPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, AKCollectionViewLayoutDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, assign) NSUInteger selectedItem;
+@property (nonatomic, strong) AKPickerViewDelegateIntercepter *intercepter;
 - (CGFloat)offsetForItem:(NSUInteger)item;
 - (void)didEndScrolling;
 - (CGSize)sizeForString:(NSString *)string;
@@ -52,11 +58,15 @@
 	self.collectionView.backgroundColor = [UIColor clearColor];
 	self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
 	self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.collectionView.delegate = self;
 	self.collectionView.dataSource = self;
 	[self.collectionView registerClass:[AKCollectionViewCell class]
 			forCellWithReuseIdentifier:NSStringFromClass([AKCollectionViewCell class])];
 	[self addSubview:self.collectionView];
+
+	self.intercepter = [AKPickerViewDelegateIntercepter new];
+	self.intercepter.pickerView = self;
+	self.intercepter.delegate = self.scrollViewDelegate;
+	self.collectionView.delegate = self.intercepter;
 
 	CAGradientLayer *maskLayer = [CAGradientLayer layer];
 	maskLayer.frame = self.collectionView.bounds;
@@ -110,6 +120,21 @@
 - (CGSize)intrinsicContentSize
 {
 	return CGSizeMake(UIViewNoIntrinsicMetric, MAX(self.font.lineHeight, self.highlightedFont.lineHeight));
+}
+
+- (CGPoint)contentOffset
+{
+    return self.collectionView.contentOffset;
+}
+
+#pragma mark -
+
+- (void)setScrollViewDelegate:(id<UIScrollViewDelegate>)scrollViewDelegate
+{
+	if (![_scrollViewDelegate isEqual:scrollViewDelegate]) {
+		_scrollViewDelegate = scrollViewDelegate;
+		self.intercepter.delegate = scrollViewDelegate;
+	}
 }
 
 #pragma mark -
@@ -199,7 +224,7 @@
 			break;
 		}
 		case AKPickerViewStyle3D: {
-			if ([self.delegate numberOfItemsInPickerView:self]) {
+			if ([self.dataSource numberOfItemsInPickerView:self]) {
 				for (NSUInteger i = 0; i < [self collectionView:self.collectionView numberOfItemsInSection:0]; i++) {
 					NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
 					AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
@@ -219,17 +244,17 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-	return ([self.delegate numberOfItemsInPickerView:self] > 0);
+	return ([self.dataSource numberOfItemsInPickerView:self] > 0);
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-	return [self.delegate numberOfItemsInPickerView:self];
+	return [self.dataSource numberOfItemsInPickerView:self];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
+	NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
 
 	AKCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([AKCollectionViewCell class])
 																		   forIndexPath:indexPath];
@@ -246,7 +271,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *title = [self.delegate pickerView:self titleForItem:indexPath.item];
+	NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
 	return CGSizeMake([self sizeForString:title].width + self.interitemSpacing, collectionView.bounds.size.height);
 }
 
@@ -276,18 +301,30 @@
 	[self selectItem:indexPath.item animated:YES];
 }
 
+#pragma mark -
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+	if ([self.scrollViewDelegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
+		[self.scrollViewDelegate scrollViewDidEndDecelerating:scrollView];
+
+
 	[self didEndScrolling];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+	if ([self.scrollViewDelegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
+		[self.scrollViewDelegate scrollViewDidScroll:scrollView];
+
 	if (!decelerate) [self didEndScrolling];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+	if ([self.scrollViewDelegate respondsToSelector:@selector(scrollViewDidScroll:)])
+		[self.scrollViewDelegate scrollViewDidScroll:scrollView];
+
 	[CATransaction begin];
 	[CATransaction setValue:(id)kCFBooleanTrue
 					 forKey:kCATransactionDisableActions];
@@ -429,6 +466,24 @@
 		}
 		default: return nil; break;
 	}
+}
+
+@end
+
+@implementation AKPickerViewDelegateIntercepter
+
+- (id)forwardingTargetForSelector:(SEL)aSelector
+{
+	if ([self.pickerView respondsToSelector:aSelector]) return self.pickerView;
+	if ([self.delegate respondsToSelector:aSelector]) return self.delegate;
+	return [super forwardingTargetForSelector:aSelector];
+}
+
+- (BOOL)respondsToSelector:(SEL)aSelector
+{
+	if ([self.pickerView respondsToSelector:aSelector]) return YES;
+	if ([self.delegate respondsToSelector:aSelector]) return YES;
+	return [super respondsToSelector:aSelector];
 }
 
 @end
