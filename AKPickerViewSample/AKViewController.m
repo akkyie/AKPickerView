@@ -10,7 +10,7 @@
 
 #import "AKPickerView.h"
 
-@interface AKViewController () <AKPickerViewDelegate>
+@interface AKViewController () <AKPickerViewDelegate, UIScrollViewDelegate>
 @property (nonatomic, strong) AKPickerView *pickerView;
 @property (nonatomic, strong) NSArray *titles;
 @end
@@ -23,6 +23,7 @@
 
 	self.pickerView = [[AKPickerView alloc] initWithFrame:self.view.bounds];
 	self.pickerView.delegate = self;
+	self.pickerView.scrollViewDelegate = self;
 	self.pickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:self.pickerView];
 
@@ -59,6 +60,12 @@
 - (void)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item
 {
 	NSLog(@"%@", self.titles[item]);
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	// Too noisy...
+	// NSLog(@"%f", scrollView.contentOffset.x);
 }
 
 @end

@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, AKPickerViewStyle) {
 @interface AKPickerView : UIView
 
 @property (nonatomic, weak) id <AKPickerViewDelegate> delegate;
+@property (nonatomic, weak) id <UIScrollViewDelegate> scrollViewDelegate;
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, strong) UIFont *highlightedFont;
 @property (nonatomic, strong) UIColor *textColor;
