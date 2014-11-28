@@ -51,9 +51,8 @@
 	self.pickerViewStyle = self.pickerViewStyle ?: AKPickerViewStyle3D;
 
 	[self.collectionView removeFromSuperview];
-	self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
-											 collectionViewLayout:[AKCollectionViewLayout new]];
-	((AKCollectionViewLayout *)self.collectionView.collectionViewLayout).delegate = self;
+    self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
+                                             collectionViewLayout:[self newLayout]];
 	self.collectionView.showsHorizontalScrollIndicator = NO;
 	self.collectionView.backgroundColor = [UIColor clearColor];
 	self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -108,7 +107,7 @@
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-	[self.collectionView.collectionViewLayout invalidateLayout];
+    self.collectionView.collectionViewLayout = [self newLayout];
 	[self scrollToItem:self.selectedItem animated:NO];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 
@@ -138,6 +137,13 @@
 }
 
 #pragma mark -
+
+- (AKCollectionViewLayout *)newLayout
+{
+    AKCollectionViewLayout *layout = [AKCollectionViewLayout new];
+    layout.delegate = self;
+    return layout;
+}
 
 - (CGSize)sizeForString:(NSString *)string
 {
