@@ -52,7 +52,7 @@
 
 	[self.collectionView removeFromSuperview];
     self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
-                                             collectionViewLayout:[self newLayout]];
+                                             collectionViewLayout:[self collectionViewLayout]];
 	self.collectionView.showsHorizontalScrollIndicator = NO;
 	self.collectionView.backgroundColor = [UIColor clearColor];
 	self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -107,7 +107,7 @@
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-    self.collectionView.collectionViewLayout = [self newLayout];
+    self.collectionView.collectionViewLayout = [self collectionViewLayout];
 	[self scrollToItem:self.selectedItem animated:NO];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 
@@ -138,7 +138,7 @@
 
 #pragma mark -
 
-- (AKCollectionViewLayout *)newLayout
+- (AKCollectionViewLayout *)collectionViewLayout
 {
     AKCollectionViewLayout *layout = [AKCollectionViewLayout new];
     layout.delegate = self;
