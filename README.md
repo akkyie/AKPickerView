@@ -1,9 +1,9 @@
 AKPickerView
 ============
 
+[![Build Status](https://travis-ci.org/Akkyie/AKPickerView.svg?branch=master)](https://travis-ci.org/Akkyie/AKPickerView)
 
-![Screenshot](./Screenshot.gif)
-![Screenshot2](./Screenshot2.gif)
+![Screenshot](./Screenshot.gif) ![Screenshot2](./Screenshot2.gif)
 
 
 A simple yet customizable horizontal picker view.
@@ -39,7 +39,7 @@ Usage
         // OR
         - (UIImage *)pickerView:(AKPickerView *)pickerView imageForItem:(NSInteger)item;
 	
-    > - Using both texts and images are currently not supported. When you implement both, `- pickerView:titleForItem` will be called and the other won't. 
+    > - Using both texts and images are currently not supported. When you implement both, `-pickerView:titleForItem` will be called and the other won't. 
     > - You currently cannot specify image sizes; AKPickerView shows the original image in its original size. Resize your images in advance if you need.
 
 1. You can change its appearance with properties below.
@@ -52,7 +52,7 @@ Usage
         @property (nonatomic, assign) CGFloat fisheyeFactor;
     
     > - All cells are laid out depending on the largest font, so large differnce between the sizes of *font* and *highlightedFont* is NOT recommended.  
-    > - fisheyeFactor property affects perspective distortion. The range is 0.0 - 1.0; slight value recommended such as 0.0001.
+    > - fisheyeFactor property affects perspective distortion. The range is 0.0 - 1.0; slight value such as 0.0001 is recommended.
 
 After all settings, **never forget to reload your picker**.
 
