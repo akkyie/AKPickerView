@@ -10,7 +10,7 @@ A simple yet customizable horizontal picker view.
 
 Works on iOS 6, 7 and 8.
 
-*News: AKPickerView now supports **images**!*
+*__News__: AKPickerView now supports __images__!*
 
 Installation
 ------------
