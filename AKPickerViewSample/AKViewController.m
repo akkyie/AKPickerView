@@ -52,10 +52,25 @@
 	return [self.titles count];
 }
 
+/*
+ * AKPickerView now support images!
+ *
+ * Please comment '-pickerView:titleForItem:' entirely
+ * and uncomment '-pickerView:imageForItem:' to see how it works.
+ *
+ */
+
 - (NSString *)pickerView:(AKPickerView *)pickerView titleForItem:(NSInteger)item
 {
 	return self.titles[item];
 }
+
+/*
+- (UIImage *)pickerView:(AKPickerView *)pickerView imageForItem:(NSInteger)item
+{
+	return [UIImage imageNamed:self.titles[item]];
+}
+*/
 
 - (void)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item
 {

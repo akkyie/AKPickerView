@@ -18,7 +18,9 @@ typedef NS_ENUM(NSInteger, AKPickerViewStyle) {
 @protocol AKPickerViewDataSource <NSObject>
 @required
 - (NSUInteger)numberOfItemsInPickerView:(AKPickerView *)pickerView;
+@optional
 - (NSString *)pickerView:(AKPickerView *)pickerView titleForItem:(NSInteger)item;
+- (UIImage *)pickerView:(AKPickerView *)pickerView imageForItem:(NSInteger)item;
 @end
 
 @protocol AKPickerViewDelegate <UIScrollViewDelegate>
