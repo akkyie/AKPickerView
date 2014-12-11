@@ -18,6 +18,7 @@
 
 @interface AKCollectionViewCell : UICollectionViewCell
 @property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, strong) UIFont *highlightedFont;
 @end
@@ -260,16 +261,20 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
-
 	AKCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([AKCollectionViewCell class])
 																		   forIndexPath:indexPath];
-	cell.label.textColor = self.textColor;
-	cell.label.highlightedTextColor = self.highlightedTextColor;
-	cell.label.font = self.font;
-	cell.font = self.font;
-	cell.highlightedFont = self.highlightedFont;
-	cell.label.text = title;
+
+	if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
+		NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
+		cell.label.text = title;
+		cell.label.textColor = self.textColor;
+		cell.label.highlightedTextColor = self.highlightedTextColor;
+		cell.label.font = self.font;
+		cell.font = self.font;
+		cell.highlightedFont = self.highlightedFont;
+	} else if ([self.dataSource respondsToSelector:@selector(pickerView:imageForItem:)]) {
+		cell.imageView.image = [self.dataSource pickerView:self imageForItem:indexPath.item];
+	}
 	cell.selected = (indexPath.item == self.selectedItem);
 
 	return cell;
@@ -277,8 +282,15 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
-	return CGSizeMake([self sizeForString:title].width + self.interitemSpacing, collectionView.bounds.size.height);
+	CGSize size = CGSizeMake(self.interitemSpacing, collectionView.bounds.size.height);
+	if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
+		NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
+		size.width += [self sizeForString:title].width;
+	} else if ([self.dataSource respondsToSelector:@selector(pickerView:imageForItem:)]) {
+		UIImage *image = [self.dataSource pickerView:self imageForItem:indexPath.item];
+		size.width += image.size.width;
+	}
+	return size;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
@@ -313,7 +325,6 @@
 {
 	if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
 		[self.delegate scrollViewDidEndDecelerating:scrollView];
-
 
 	[self didEndScrolling];
 }
@@ -362,6 +373,12 @@
 	self.label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
 	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.contentView addSubview:self.label];
+	
+	self.imageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
+	self.imageView.backgroundColor = [UIColor clearColor];
+	self.imageView.contentMode = UIViewContentModeCenter;
+	self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[self.contentView addSubview:self.imageView];
 }
 
 - (id)initWithFrame:(CGRect)frame

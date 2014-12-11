@@ -17,6 +17,7 @@
 		660F9EB718E6E9AC00EE7347 /* AKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F9EB618E6E9AC00EE7347 /* AKViewController.m */; };
 		660F9EB918E6E9AC00EE7347 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 660F9EB818E6E9AC00EE7347 /* Images.xcassets */; };
 		660F9EDB18E6EA4800EE7347 /* AKPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F9EDA18E6EA4800EE7347 /* AKPickerView.m */; };
+		6619BC1B1A39954F004FB4DE /* Screenshot2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6619BC1A1A39954F004FB4DE /* Screenshot2.gif */; };
 		66B25010190018590021F045 /* AKPickerView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 66B2500F190018590021F045 /* AKPickerView.podspec */; };
 		66FB3E2E18F2A2200024CEDD /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2B18F2A2200024CEDD /* LICENSE */; };
 		66FB3E3018F2A2200024CEDD /* Screenshot.gif in Resources */ = {isa = PBXBuildFile; fileRef = 66FB3E2D18F2A2200024CEDD /* Screenshot.gif */; };
@@ -40,6 +41,7 @@
 		660F9EBF18E6E9AC00EE7347 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		660F9ED918E6EA4800EE7347 /* AKPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPickerView.h; sourceTree = "<group>"; };
 		660F9EDA18E6EA4800EE7347 /* AKPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPickerView.m; sourceTree = "<group>"; };
+		6619BC1A1A39954F004FB4DE /* Screenshot2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Screenshot2.gif; sourceTree = "<group>"; };
 		66B2500F190018590021F045 /* AKPickerView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AKPickerView.podspec; sourceTree = "<group>"; };
 		66BEA9E319AA5BB4005F6407 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		66FB3E2B18F2A2200024CEDD /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				66B2500F190018590021F045 /* AKPickerView.podspec */,
 				66FB3E2B18F2A2200024CEDD /* LICENSE */,
 				66FB3E2D18F2A2200024CEDD /* Screenshot.gif */,
+				6619BC1A1A39954F004FB4DE /* Screenshot2.gif */,
 				66BEA9E319AA5BB4005F6407 /* README.md */,
 				660F9EA618E6E9AC00EE7347 /* AKPickerViewSample */,
 				660F9E9F18E6E9AC00EE7347 /* Frameworks */,
@@ -186,6 +189,7 @@
 				66FB3E2E18F2A2200024CEDD /* LICENSE in Resources */,
 				66FB3E3018F2A2200024CEDD /* Screenshot.gif in Resources */,
 				660F9EB418E6E9AC00EE7347 /* Main.storyboard in Resources */,
+				6619BC1B1A39954F004FB4DE /* Screenshot2.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
