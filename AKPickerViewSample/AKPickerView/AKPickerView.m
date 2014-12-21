@@ -175,17 +175,21 @@
 - (CGFloat)offsetForItem:(NSUInteger)item
 {
 	CGFloat offset = 0.0;
-	for (NSInteger i = 0; i < item; i++) {
-		NSIndexPath *_indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-		AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:_indexPath];
-		offset += cell.bounds.size.width;
-	}
-
-	NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-	CGSize firstSize = [self.collectionView cellForItemAtIndexPath:firstIndexPath].bounds.size;
-	NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
-	CGSize selectedSize = [self.collectionView cellForItemAtIndexPath:selectedIndexPath].bounds.size;
-	offset -= (firstSize.width - selectedSize.width) / 2;
+    
+    if (item < [self.collectionView numberOfItemsInSection:0])
+    {
+        for (NSInteger i = 0; i < item; i++) {
+            NSIndexPath *_indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+            AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:_indexPath];
+            offset += cell.bounds.size.width;
+        }
+        
+        NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+        CGSize firstSize = [self.collectionView cellForItemAtIndexPath:firstIndexPath].bounds.size;
+        NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
+        CGSize selectedSize = [self.collectionView cellForItemAtIndexPath:selectedIndexPath].bounds.size;
+        offset -= (firstSize.width - selectedSize.width) / 2;
+    }
 
 	return offset;
 }
