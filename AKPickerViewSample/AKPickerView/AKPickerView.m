@@ -52,8 +52,8 @@
 	self.pickerViewStyle = self.pickerViewStyle ?: AKPickerViewStyle3D;
 
 	[self.collectionView removeFromSuperview];
-    self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
-                                             collectionViewLayout:[self collectionViewLayout]];
+	self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
+											 collectionViewLayout:[self collectionViewLayout]];
 	self.collectionView.showsHorizontalScrollIndicator = NO;
 	self.collectionView.backgroundColor = [UIColor clearColor];
 	self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -108,7 +108,7 @@
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-    self.collectionView.collectionViewLayout = [self collectionViewLayout];
+	self.collectionView.collectionViewLayout = [self collectionViewLayout];
 	[self scrollToItem:self.selectedItem animated:NO];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 
@@ -124,7 +124,7 @@
 
 - (CGPoint)contentOffset
 {
-    return self.collectionView.contentOffset;
+	return self.collectionView.contentOffset;
 }
 
 #pragma mark -
@@ -141,9 +141,9 @@
 
 - (AKCollectionViewLayout *)collectionViewLayout
 {
-    AKCollectionViewLayout *layout = [AKCollectionViewLayout new];
-    layout.delegate = self;
-    return layout;
+	AKCollectionViewLayout *layout = [AKCollectionViewLayout new];
+	layout.delegate = self;
+	return layout;
 }
 
 - (CGSize)sizeForString:(NSString *)string
@@ -174,22 +174,22 @@
 
 - (CGFloat)offsetForItem:(NSUInteger)item
 {
+	NSAssert(item < [self.collectionView numberOfItemsInSection:0],
+			 @"item out of range; '%lu' passed, but the maximum is '%lu'", item, [self.collectionView numberOfItemsInSection:0]);
+
 	CGFloat offset = 0.0;
-    
-    if (item < [self.collectionView numberOfItemsInSection:0])
-    {
-        for (NSInteger i = 0; i < item; i++) {
-            NSIndexPath *_indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-            AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:_indexPath];
-            offset += cell.bounds.size.width;
-        }
-        
-        NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-        CGSize firstSize = [self.collectionView cellForItemAtIndexPath:firstIndexPath].bounds.size;
-        NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
-        CGSize selectedSize = [self.collectionView cellForItemAtIndexPath:selectedIndexPath].bounds.size;
-        offset -= (firstSize.width - selectedSize.width) / 2;
-    }
+
+	for (NSInteger i = 0; i < item; i++) {
+		NSIndexPath *_indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+		AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:_indexPath];
+		offset += cell.bounds.size.width;
+	}
+
+	NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+	CGSize firstSize = [self.collectionView cellForItemAtIndexPath:firstIndexPath].bounds.size;
+	NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
+	CGSize selectedSize = [self.collectionView cellForItemAtIndexPath:selectedIndexPath].bounds.size;
+	offset -= (firstSize.width - selectedSize.width) / 2;
 
 	return offset;
 }
@@ -214,7 +214,7 @@
 
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated
 {
-    [self selectItem:item animated:animated notifySelection:YES];
+	[self selectItem:item animated:animated notifySelection:YES];
 }
 
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated notifySelection:(BOOL)notifySelection
@@ -227,7 +227,7 @@
 	self.selectedItem = item;
 
 	if (notifySelection &&
-        [self.delegate respondsToSelector:@selector(pickerView:didSelectItem:)])
+		[self.delegate respondsToSelector:@selector(pickerView:didSelectItem:)])
 		[self.delegate pickerView:self didSelectItem:item];
 }
 
@@ -383,7 +383,7 @@
 	self.label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
 	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.contentView addSubview:self.label];
-	
+
 	self.imageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
 	self.imageView.backgroundColor = [UIColor clearColor];
 	self.imageView.contentMode = UIViewContentModeCenter;
