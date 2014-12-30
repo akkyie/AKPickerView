@@ -167,9 +167,7 @@
 	[self invalidateIntrinsicContentSize];
 	[self.collectionView.collectionViewLayout invalidateLayout];
 	[self.collectionView reloadData];
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[self selectItem:self.selectedItem animated:NO notifySelection:NO];
-	});
+	[self selectItem:self.selectedItem animated:NO notifySelection:NO];
 }
 
 - (CGFloat)offsetForItem:(NSUInteger)item
@@ -180,15 +178,15 @@
 	CGFloat offset = 0.0;
 
 	for (NSInteger i = 0; i < item; i++) {
-		NSIndexPath *_indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-		AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:_indexPath];
-		offset += cell.bounds.size.width;
+		NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+		CGSize cellSize = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout sizeForItemAtIndexPath:indexPath];
+		offset += cellSize.width;
 	}
 
 	NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-	CGSize firstSize = [self.collectionView cellForItemAtIndexPath:firstIndexPath].bounds.size;
+	CGSize firstSize = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];
 	NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
-	CGSize selectedSize = [self.collectionView cellForItemAtIndexPath:selectedIndexPath].bounds.size;
+	CGSize selectedSize = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout sizeForItemAtIndexPath:selectedIndexPath];
 	offset -= (firstSize.width - selectedSize.width) / 2;
 
 	return offset;
