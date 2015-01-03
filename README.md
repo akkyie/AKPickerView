@@ -24,12 +24,15 @@ Use [CocoaPods](http://cocoapods.org)
 Usage
 -----
 
-1. Instantiate and set *delegate* as you know,
+*__Caveat__*: From version 2.0, `dataSource` separated from `delegate`. When you updated it, check new how to use below.
+
+1. Instantiate and set `delegate` and `dataSource` as you know,
 
         self.pickerView = [[AKPickerView alloc] initWithFrame:<#frame#>];
         self.pickerView.delegate = self;
+        self.pickerView.dataSource = self;
 
-1. then specify the number of items using delegate methods,
+1. then specify the number of items using `AKPickerViewDataSource` methods,
 
         - (NSUInteger)numberOfItemsInPickerView:(AKPickerView *)pickerView;
 	
@@ -54,9 +57,15 @@ Usage
     - All cells are laid out depending on the largest font, so large differnce between the sizes of *font* and *highlightedFont* is NOT recommended.  
     - fisheyeFactor property affects perspective distortion. The range is 0.0 - 1.0; slight value such as 0.0001 is recommended.
 
-After all settings, **never forget to reload your picker**.
+1. After all settings, **never forget to reload your picker**.
 
     [self.pickerView reloadData];
+    
+Option: You can use `AKPickerViewDelegate` method to observe selection changes:
+
+    - (void)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item;
+    
+Additionally, you can use `UIScrollViewDelegate` method to observe scrolling.
     
 For more detail, see the sample project.
 
