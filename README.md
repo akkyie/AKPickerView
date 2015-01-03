@@ -3,7 +3,8 @@ AKPickerView
 
 [![Build Status](https://travis-ci.org/Akkyie/AKPickerView.svg?branch=master)](https://travis-ci.org/Akkyie/AKPickerView)
 
-![Screenshot](./Screenshot.gif) ![Screenshot2](./Screenshot2.gif)
+<img src="./Screenshot.gif" width="200" alt="Screenshot" />
+<img src="./Screenshot2.gif" width="200" alt="Screenshot" />
 
 
 A simple yet customizable horizontal picker view.
