@@ -13,6 +13,7 @@
 @interface AKViewController () <AKPickerViewDataSource, AKPickerViewDelegate>
 @property (nonatomic, strong) AKPickerView *pickerView;
 @property (nonatomic, strong) NSArray *titles;
+@property (nonatomic, strong) NSArray *colors;
 @end
 
 @implementation AKViewController
@@ -43,6 +44,17 @@
 					@"Hokkaido",
 					@"Fukuoka",
 					@"Shizuoka"];
+    
+    self.colors = @[[UIColor redColor],
+                    [UIColor greenColor],
+                    [UIColor yellowColor],
+                    [UIColor blueColor],
+                    [UIColor orangeColor],
+                    [UIColor purpleColor],
+                    [UIColor brownColor],
+                    [UIColor redColor],
+                    [UIColor greenColor],
+                    [UIColor yellowColor]];
 
 	[self.pickerView reloadData];
 }
@@ -71,6 +83,18 @@
 	return [UIImage imageNamed:self.titles[item]];
 }
 */
+
+- (void)pickerView:(AKPickerView *)pickerView editLabel:(UILabel *)label forItem:(NSInteger)item
+{
+    label.layer.cornerRadius = 2.0;
+    label.backgroundColor = self.colors[item];
+    label.clipsToBounds = YES;
+}
+
+- (CGSize)pickerView:(AKPickerView *)pickerView editLabelMarginForItem:(NSInteger)item
+{
+    return CGSizeMake(8, 4);
+}
 
 - (void)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item
 {
