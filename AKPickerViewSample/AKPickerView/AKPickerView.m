@@ -278,8 +278,25 @@
 		cell.label.textColor = self.textColor;
 		cell.label.highlightedTextColor = self.highlightedTextColor;
 		cell.label.font = self.font;
+        CGRect frame = cell.label.frame;
+        frame.size = [self sizeForString:title];
+        
+        if([self.delegate respondsToSelector:@selector(pickerView:editLabelMarginForItem:)]) {
+            CGSize margin = [self.delegate pickerView:self editLabelMarginForItem:indexPath.item];
+            frame.size.width += margin.width * 2;
+            frame.size.height += margin.height * 2;
+        }
+        
+        frame.origin.y = (cell.bounds.size.height - frame.size.height) / 2;
+        cell.label.frame = frame;
+//        cell.label.center = cell.center;
 		cell.font = self.font;
 		cell.highlightedFont = self.highlightedFont;
+        
+        if([self.delegate respondsToSelector:@selector(pickerView:editLabel:forItem:)]) {
+            [self.delegate pickerView:self editLabel:cell.label forItem:indexPath.item];
+        }
+        
 	} else if ([self.dataSource respondsToSelector:@selector(pickerView:imageForItem:)]) {
 		cell.imageView.image = [self.dataSource pickerView:self imageForItem:indexPath.item];
 	}
@@ -294,6 +311,11 @@
 	if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
 		NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
 		size.width += [self sizeForString:title].width;
+        if([self.delegate respondsToSelector:@selector(pickerView:editLabelMarginForItem:)]) {
+            CGSize margin = [self.delegate pickerView:self editLabelMarginForItem:indexPath.item];
+            size.width += margin.width * 2;
+            if(size.height < [self sizeForString:title].height + (margin.height * 2) ) size.height += margin.height * 2;
+        }
 	} else if ([self.dataSource respondsToSelector:@selector(pickerView:imageForItem:)]) {
 		UIImage *image = [self.dataSource pickerView:self imageForItem:indexPath.item];
 		size.width += image.size.width;
@@ -379,7 +401,7 @@
 	self.label.lineBreakMode = NSLineBreakByTruncatingTail;
 	self.label.highlightedTextColor = [UIColor blackColor];
 	self.label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin; //| UIViewAutoresizingFlexibleHeight;
 	[self.contentView addSubview:self.label];
 
 	self.imageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
