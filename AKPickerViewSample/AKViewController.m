@@ -47,6 +47,8 @@
 	[self.pickerView reloadData];
 }
 
+#pragma mark - AKPickerViewDataSource
+
 - (NSUInteger)numberOfItemsInPickerView:(AKPickerView *)pickerView
 {
 	return [self.titles count];
@@ -72,10 +74,50 @@
 }
 */
 
+#pragma mark - AKPickerViewDelegate
+
 - (void)pickerView:(AKPickerView *)pickerView didSelectItem:(NSInteger)item
 {
 	NSLog(@"%@", self.titles[item]);
 }
+
+
+/*
+ * Label Customization
+ *
+ * You can customize labels by their any properties (except font,)
+ * and margin around text.
+ * These methods are optional, and ignored when using images.
+ *
+ */
+
+/*
+- (void)pickerView:(AKPickerView *)pickerView configureLabel:(UILabel *const)label forItem:(NSInteger)item
+{
+	label.textColor = [UIColor lightGrayColor];
+	label.highlightedTextColor = [UIColor whiteColor];
+	label.backgroundColor = [UIColor colorWithHue:(float)item/(float)self.titles.count
+									   saturation:1.0
+									   brightness:1.0
+											alpha:1.0];
+}
+*/
+
+/*
+- (CGSize)pickerView:(AKPickerView *)pickerView marginForItem:(NSInteger)item
+{
+	return CGSizeMake(40, 20);
+}
+*/
+
+#pragma mark - UIScrollViewDelegate
+
+/*
+ * AKPickerViewDelegate inherits UIScrollViewDelegate.
+ * You can use UIScrollViewDelegate methods
+ * by simply setting pickerView's delegate.
+ *
+ */
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

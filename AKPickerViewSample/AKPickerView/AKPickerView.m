@@ -280,6 +280,14 @@
 		cell.label.font = self.font;
 		cell.font = self.font;
 		cell.highlightedFont = self.highlightedFont;
+		cell.label.bounds = (CGRect){CGPointZero, [self sizeForString:title]};
+		if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
+			CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
+			cell.label.frame = CGRectInset(cell.label.frame, -margin.width, -margin.height);
+		}
+		if ([self.delegate respondsToSelector:@selector(pickerView:configureLabel:forItem:)]) {
+			[self.delegate pickerView:self configureLabel:cell.label forItem:indexPath.item];
+		}
 	} else if ([self.dataSource respondsToSelector:@selector(pickerView:imageForItem:)]) {
 		cell.imageView.image = [self.dataSource pickerView:self imageForItem:indexPath.item];
 	}
@@ -294,6 +302,10 @@
 	if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
 		NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
 		size.width += [self sizeForString:title].width;
+		if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
+			CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
+			size.width += margin.width * 2;
+		}
 	} else if ([self.dataSource respondsToSelector:@selector(pickerView:imageForItem:)]) {
 		UIImage *image = [self.dataSource pickerView:self imageForItem:indexPath.item];
 		size.width += image.size.width;
@@ -379,7 +391,10 @@
 	self.label.lineBreakMode = NSLineBreakByTruncatingTail;
 	self.label.highlightedTextColor = [UIColor blackColor];
 	self.label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.label.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin |
+								   UIViewAutoresizingFlexibleLeftMargin |
+								   UIViewAutoresizingFlexibleBottomMargin |
+								   UIViewAutoresizingFlexibleRightMargin);
 	[self.contentView addSubview:self.label];
 
 	self.imageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
@@ -458,8 +473,7 @@
 	UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForItemAtIndexPath:indexPath];
 	switch ([self.delegate pickerViewStyleForCollectionViewLayout:self]) {
 		case AKPickerViewStyleFlat: {
-			return attributes;
-			break;
+			return attributes; break;
 		}
 		case AKPickerViewStyle3D: {
 			CGFloat distance = CGRectGetMidX(attributes.frame) - self.midX;
@@ -470,8 +484,7 @@
 			transform = CATransform3DTranslate(transform, 0, 0, self.width);
 			attributes.transform3D = transform;
 			attributes.alpha = (ABS(currentAngle) < self.maxAngle);
-			return attributes;
-			break;
+			return attributes; break;
 		}
 		default: return nil; break;
 	}

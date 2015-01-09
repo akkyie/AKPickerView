@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		660AFE291A604C550078B21C /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 660AFE281A604C550078B21C /* Launch Screen.xib */; };
 		660F9EA118E6E9AC00EE7347 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA018E6E9AC00EE7347 /* Foundation.framework */; };
 		660F9EA318E6E9AC00EE7347 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA218E6E9AC00EE7347 /* CoreGraphics.framework */; };
 		660F9EA518E6E9AC00EE7347 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660F9EA418E6E9AC00EE7347 /* UIKit.framework */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		660AFE281A604C550078B21C /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		660F9E9D18E6E9AC00EE7347 /* AKPickerViewSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AKPickerViewSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		660F9EA018E6E9AC00EE7347 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		660F9EA218E6E9AC00EE7347 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -105,6 +107,7 @@
 				660F9EB518E6E9AC00EE7347 /* AKViewController.h */,
 				660F9EB618E6E9AC00EE7347 /* AKViewController.m */,
 				660F9EB818E6E9AC00EE7347 /* Images.xcassets */,
+				660AFE281A604C550078B21C /* Launch Screen.xib */,
 				660F9EA718E6E9AC00EE7347 /* Supporting Files */,
 			);
 			path = AKPickerViewSample;
@@ -188,6 +191,7 @@
 				66B25010190018590021F045 /* AKPickerView.podspec in Resources */,
 				66FB3E2E18F2A2200024CEDD /* LICENSE in Resources */,
 				66FB3E3018F2A2200024CEDD /* Screenshot.gif in Resources */,
+				660AFE291A604C550078B21C /* Launch Screen.xib in Resources */,
 				660F9EB418E6E9AC00EE7347 /* Main.storyboard in Resources */,
 				6619BC1B1A39954F004FB4DE /* Screenshot2.gif in Resources */,
 			);
