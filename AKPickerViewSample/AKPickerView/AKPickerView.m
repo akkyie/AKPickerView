@@ -112,9 +112,12 @@
 	[self scrollToItem:self.selectedItem animated:NO];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 
-	CATransform3D transform = CATransform3DIdentity;
-	transform.m34 = -MAX(MIN(self.fisheyeFactor, 1.0), 0.0);
-	self.collectionView.layer.sublayerTransform = transform;
+    if (self.fisheyeFactorEnabled) {
+        CATransform3D transform = CATransform3DIdentity;
+        transform.m34 = -MAX(MIN(self.fisheyeFactor, 1.0), 0.0);
+        self.collectionView.layer.sublayerTransform = transform;
+    }
+	
 }
 
 - (CGSize)intrinsicContentSize
