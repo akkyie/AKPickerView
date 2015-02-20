@@ -50,6 +50,7 @@
 	self.textColor = self.textColor ?: [UIColor darkGrayColor];
 	self.highlightedTextColor = self.highlightedTextColor ?: [UIColor blackColor];
 	self.pickerViewStyle = self.pickerViewStyle ?: AKPickerViewStyle3D;
+	self.maskDisabled = self.maskDisabled;
 
 	[self.collectionView removeFromSuperview];
 	self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
@@ -67,17 +68,6 @@
 	self.intercepter.pickerView = self;
 	self.intercepter.delegate = self.delegate;
 	self.collectionView.delegate = self.intercepter;
-
-	CAGradientLayer *maskLayer = [CAGradientLayer layer];
-	maskLayer.frame = self.collectionView.bounds;
-	maskLayer.colors = @[(id)[[UIColor clearColor] CGColor],
-						 (id)[[UIColor blackColor] CGColor],
-						 (id)[[UIColor blackColor] CGColor],
-						 (id)[[UIColor clearColor] CGColor],];
-	maskLayer.locations = @[@0.0, @0.33, @0.66, @1.0];
-	maskLayer.startPoint = CGPointMake(0.0, 0.0);
-	maskLayer.endPoint = CGPointMake(1.0, 0.0);
-	self.collectionView.layer.mask = maskLayer;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -111,10 +101,6 @@
 	self.collectionView.collectionViewLayout = [self collectionViewLayout];
 	[self scrollToItem:self.selectedItem animated:NO];
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
-
-	CATransform3D transform = CATransform3DIdentity;
-	transform.m34 = -MAX(MIN(self.fisheyeFactor, 1.0), 0.0);
-	self.collectionView.layer.sublayerTransform = transform;
 }
 
 - (CGSize)intrinsicContentSize
@@ -135,6 +121,33 @@
 		_delegate = delegate;
 		self.intercepter.delegate = delegate;
 	}
+}
+
+- (void)setFisheyeFactor:(CGFloat)fisheyeFactor
+{
+	_fisheyeFactor = fisheyeFactor;
+
+	CATransform3D transform = CATransform3DIdentity;
+	transform.m34 = -MAX(MIN(self.fisheyeFactor, 1.0), 0.0);
+	self.collectionView.layer.sublayerTransform = transform;
+}
+
+- (void)setMaskDisabled:(BOOL)maskDisabled
+{
+	_maskDisabled = maskDisabled;
+
+	self.collectionView.layer.mask = maskDisabled ? nil : ({
+		CAGradientLayer *maskLayer = [CAGradientLayer layer];
+		maskLayer.frame = self.collectionView.bounds;
+		maskLayer.colors = @[(id)[[UIColor clearColor] CGColor],
+							 (id)[[UIColor blackColor] CGColor],
+							 (id)[[UIColor blackColor] CGColor],
+							 (id)[[UIColor clearColor] CGColor],];
+		maskLayer.locations = @[@0.0, @0.33, @0.66, @1.0];
+		maskLayer.startPoint = CGPointMake(0.0, 0.0);
+		maskLayer.endPoint = CGPointMake(1.0, 0.0);
+		maskLayer;
+	});
 }
 
 #pragma mark -

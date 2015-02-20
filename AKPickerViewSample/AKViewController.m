@@ -32,6 +32,7 @@
 	self.pickerView.interitemSpacing = 20.0;
 	self.pickerView.fisheyeFactor = 0.001;
 	self.pickerView.pickerViewStyle = AKPickerViewStyle3D;
+	self.pickerView.maskDisabled = false;
 
 	self.titles = @[@"Tokyo",
 					@"Kanagawa",
