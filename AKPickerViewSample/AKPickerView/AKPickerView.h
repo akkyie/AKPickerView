@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, AKPickerViewStyle) {
 @property (nonatomic, assign) CGFloat interitemSpacing;
 @property (nonatomic, assign) CGFloat fisheyeFactor; // 0...1; slight value recommended such as 0.0001
 @property (nonatomic, assign) AKPickerViewStyle pickerViewStyle;
+@property (nonatomic) BOOL fisheyeFactorEnabled;
 @property (nonatomic, assign, readonly) NSUInteger selectedItem;
 @property (nonatomic, assign, readonly) CGPoint contentOffset;
 
