@@ -359,7 +359,7 @@
 	if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
 		[self.delegate scrollViewDidEndDecelerating:scrollView];
 
-	[self didEndScrolling];
+	if (!scrollView.isTracking) [self didEndScrolling];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
