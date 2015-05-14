@@ -99,7 +99,9 @@
 {
 	[super layoutSubviews];
 	self.collectionView.collectionViewLayout = [self collectionViewLayout];
-	[self scrollToItem:self.selectedItem animated:NO];
+	if ([self.dataSource numberOfItemsInPickerView:self]) {
+		[self scrollToItem:self.selectedItem animated:NO];
+	}
 	self.collectionView.layer.mask.frame = self.collectionView.bounds;
 }
 
@@ -180,7 +182,9 @@
 	[self invalidateIntrinsicContentSize];
 	[self.collectionView.collectionViewLayout invalidateLayout];
 	[self.collectionView reloadData];
-	[self selectItem:self.selectedItem animated:NO notifySelection:NO];
+	if ([self.dataSource numberOfItemsInPickerView:self]) {
+		[self selectItem:self.selectedItem animated:NO notifySelection:NO];
+	}
 }
 
 - (CGFloat)offsetForItem:(NSUInteger)item
