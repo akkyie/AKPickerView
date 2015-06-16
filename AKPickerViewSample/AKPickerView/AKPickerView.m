@@ -57,6 +57,7 @@
 	self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
 											 collectionViewLayout:[self collectionViewLayout]];
 	self.collectionView.showsHorizontalScrollIndicator = NO;
+	self.collectionView.showsVerticalScrollIndicator = NO;
 	self.collectionView.backgroundColor = [UIColor clearColor];
 	self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
 	self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
