@@ -50,7 +50,7 @@
 	self.textColor = self.textColor ?: [UIColor darkGrayColor];
 	self.highlightedTextColor = self.highlightedTextColor ?: [UIColor blackColor];
 	self.pickerViewStyle = self.pickerViewStyle ?: AKPickerViewStyle3D;
-    self.pickerViewOrientation = self.pickerViewOrientation ?: AKPickerViewOrientationHorizontal;
+	self.pickerViewOrientation = self.pickerViewOrientation ?: AKPickerViewOrientationHorizontal;
 	self.maskDisabled = self.maskDisabled;
 
 	[self.collectionView removeFromSuperview];
@@ -148,20 +148,20 @@
 							 (id)[[UIColor clearColor] CGColor],];
 		maskLayer.locations = @[@0.0, @0.33, @0.66, @1.0];
 		maskLayer.startPoint = CGPointMake(0.0, 0.0);
-        maskLayer.endPoint = (self.pickerViewOrientation == AKPickerViewOrientationVertical) ? CGPointMake(0.0, 1.0) : CGPointMake(1.0, 0.0);
+		maskLayer.endPoint = (self.pickerViewOrientation == AKPickerViewOrientationVertical) ? CGPointMake(0.0, 1.0) : CGPointMake(1.0, 0.0);
 		maskLayer;
 	});
 }
 
 - (void)setPickerViewOrientation:(AKPickerViewOrientation)pickerViewOrientation
 {
-    _pickerViewOrientation = pickerViewOrientation;
+	_pickerViewOrientation = pickerViewOrientation;
 
-    self.collectionView.collectionViewLayout = [self collectionViewLayout];
-    if (!self.maskDisabled && [self.collectionView.layer.mask isKindOfClass:[CAGradientLayer class]]) {
-        CAGradientLayer *maskLayer = (CAGradientLayer *)self.collectionView.layer.mask;
-        maskLayer.endPoint = (self.pickerViewOrientation == AKPickerViewOrientationVertical) ? CGPointMake(0.0, 1.0) : CGPointMake(1.0, 0.0);
-    }
+	self.collectionView.collectionViewLayout = [self collectionViewLayout];
+	if (!self.maskDisabled && [self.collectionView.layer.mask isKindOfClass:[CAGradientLayer class]]) {
+		CAGradientLayer *maskLayer = (CAGradientLayer *)self.collectionView.layer.mask;
+		maskLayer.endPoint = (self.pickerViewOrientation == AKPickerViewOrientationVertical) ? CGPointMake(0.0, 1.0) : CGPointMake(1.0, 0.0);
+	}
 }
 
 #pragma mark -
@@ -170,15 +170,15 @@
 {
 	AKCollectionViewLayout *layout = [AKCollectionViewLayout new];
 	layout.delegate = self;
-    switch (self.pickerViewOrientation) {
-        case AKPickerViewOrientationVertical:
-            layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-            break;
-        case AKPickerViewOrientationHorizontal:
-        default:
-            layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-            break;
-    }
+	switch (self.pickerViewOrientation) {
+		case AKPickerViewOrientationVertical:
+			layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+			break;
+		case AKPickerViewOrientationHorizontal:
+		default:
+			layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+			break;
+	}
 	return layout;
 }
 
@@ -218,22 +218,22 @@
 	for (NSInteger i = 0; i < item; i++) {
 		NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
 		CGSize cellSize = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout sizeForItemAtIndexPath:indexPath];
-        if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
-            offset += cellSize.height;
-        } else {
-            offset += cellSize.width;
-        }
+		if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
+			offset += cellSize.height;
+		} else {
+			offset += cellSize.width;
+		}
 	}
 
 	NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
 	CGSize firstSize = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];
 	NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
 	CGSize selectedSize = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout sizeForItemAtIndexPath:selectedIndexPath];
-    if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
-        offset -= (firstSize.height - selectedSize.height) / 2;
-    } else {
-        offset -= (firstSize.width - selectedSize.width) / 2;
-    }
+	if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
+		offset -= (firstSize.height - selectedSize.height) / 2;
+	} else {
+		offset -= (firstSize.width - selectedSize.width) / 2;
+	}
 
 	return offset;
 }
@@ -242,25 +242,25 @@
 {
 	switch (self.pickerViewStyle) {
 		case AKPickerViewStyleFlat: {
-            if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
-                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
-                                            atScrollPosition:UICollectionViewScrollPositionCenteredVertically
-                                                    animated:animated];
-            } else {
-                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
-                                            atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-                                                    animated:animated];
-            }
+			if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
+				[self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
+											atScrollPosition:UICollectionViewScrollPositionCenteredVertically
+													animated:animated];
+			} else {
+				[self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
+											atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+													animated:animated];
+			}
 			break;
 		}
 		case AKPickerViewStyle3D: {
-            if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
-                [self.collectionView setContentOffset:CGPointMake(self.collectionView.contentOffset.x, [self offsetForItem:item])
-                                             animated:animated];
-            } else {
-                [self.collectionView setContentOffset:CGPointMake([self offsetForItem:item], self.collectionView.contentOffset.y)
-                                             animated:animated];
-            }
+			if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
+				[self.collectionView setContentOffset:CGPointMake(self.collectionView.contentOffset.x, [self offsetForItem:item])
+											 animated:animated];
+			} else {
+				[self.collectionView setContentOffset:CGPointMake([self offsetForItem:item], self.collectionView.contentOffset.y)
+											 animated:animated];
+			}
 			break;
 		}
 		default: break;
@@ -300,17 +300,17 @@
 				for (NSUInteger i = 0; i < [self collectionView:self.collectionView numberOfItemsInSection:0]; i++) {
 					NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
 					AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-                    if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
-                        if ([self offsetForItem:i] + cell.bounds.size.height / 2 > self.collectionView.contentOffset.y) {
-                            [self selectItem:i animated:YES];
-                            break;
-                        }
-                    } else {
-                        if ([self offsetForItem:i] + cell.bounds.size.width / 2 > self.collectionView.contentOffset.x) {
-                            [self selectItem:i animated:YES];
-                            break;
-                        }
-                    }
+					if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
+						if ([self offsetForItem:i] + cell.bounds.size.height / 2 > self.collectionView.contentOffset.y) {
+							[self selectItem:i animated:YES];
+							break;
+						}
+					} else {
+						if ([self offsetForItem:i] + cell.bounds.size.width / 2 > self.collectionView.contentOffset.x) {
+							[self selectItem:i animated:YES];
+							break;
+						}
+					}
 				}
 			}
 			break;
@@ -362,29 +362,29 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGSize size = (self.pickerViewOrientation == AKPickerViewOrientationVertical) ? CGSizeMake(collectionView.bounds.size.width, self.interitemSpacing) : CGSizeMake(self.interitemSpacing, collectionView.bounds.size.height);
+	CGSize size = (self.pickerViewOrientation == AKPickerViewOrientationVertical) ? CGSizeMake(collectionView.bounds.size.width, self.interitemSpacing) : CGSizeMake(self.interitemSpacing, collectionView.bounds.size.height);
 	if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
 		NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
-        if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
-            size.height += [self sizeForString:title].height;
-        } else {
-            size.width += [self sizeForString:title].width;
-        }
+		if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
+			size.height += [self sizeForString:title].height;
+		} else {
+			size.width += [self sizeForString:title].width;
+		}
 		if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
 			CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
-            if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
-                size.height += margin.height * 2;
-            } else {
-                size.width += margin.width * 2;
-            }
+			if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
+				size.height += margin.height * 2;
+			} else {
+				size.width += margin.width * 2;
+			}
 		}
 	} else if ([self.dataSource respondsToSelector:@selector(pickerView:imageForItem:)]) {
 		UIImage *image = [self.dataSource pickerView:self imageForItem:indexPath.item];
-        if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
-            size.height += image.size.height;
-        } else {
-            size.width += image.size.width;
-        }
+		if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
+			size.height += image.size.height;
+		} else {
+			size.width += image.size.width;
+		}
 	}
 	return size;
 }
@@ -406,13 +406,13 @@
 	CGSize firstSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];
 	NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:number - 1 inSection:section];
 	CGSize lastSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:lastIndexPath];
-    if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
-        return UIEdgeInsetsMake((collectionView.bounds.size.height - firstSize.height) / 2, 0,
-                                (collectionView.bounds.size.height - lastSize.height) / 2, 0);
-    } else {
-        return UIEdgeInsetsMake(0, (collectionView.bounds.size.width - firstSize.width) / 2,
-                                0, (collectionView.bounds.size.width - lastSize.width) / 2);
-    }
+	if (self.pickerViewOrientation == AKPickerViewOrientationVertical) {
+		return UIEdgeInsetsMake((collectionView.bounds.size.height - firstSize.height) / 2, 0,
+								(collectionView.bounds.size.height - lastSize.height) / 2, 0);
+	} else {
+		return UIEdgeInsetsMake(0, (collectionView.bounds.size.width - firstSize.width) / 2,
+								0, (collectionView.bounds.size.width - lastSize.width) / 2);
+	}
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -541,9 +541,9 @@
 {
 	CGRect visibleRect = (CGRect){self.collectionView.contentOffset, self.collectionView.bounds.size};
 	self.midX = CGRectGetMidX(visibleRect);
-    self.midY = CGRectGetMidY(visibleRect);
+	self.midY = CGRectGetMidY(visibleRect);
 	self.width = CGRectGetWidth(visibleRect) / 2;
-    self.height = CGRectGetHeight(visibleRect) / 2;
+	self.height = CGRectGetHeight(visibleRect) / 2;
 	self.maxAngle = M_PI_2;
 }
 
@@ -560,25 +560,25 @@
 			return attributes; break;
 		}
 		case AKPickerViewStyle3D: {
-            if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
-                CGFloat distance = CGRectGetMidY(attributes.frame) - self.midY;
-                CGFloat currentAngle = self.maxAngle * distance / self.height / M_PI_2;
-                CATransform3D transform = CATransform3DIdentity;
-                transform = CATransform3DTranslate(transform, 0, distance, -self.height);
-                transform = CATransform3DRotate(transform, currentAngle, 1, 0, 0);
-                transform = CATransform3DTranslate(transform, 0, 0, self.height);
-                attributes.transform3D = transform;
-                attributes.alpha = (ABS(currentAngle) < self.maxAngle);
-            } else {
-                CGFloat distance = CGRectGetMidX(attributes.frame) - self.midX;
-                CGFloat currentAngle = self.maxAngle * distance / self.width / M_PI_2;
-                CATransform3D transform = CATransform3DIdentity;
-                transform = CATransform3DTranslate(transform, -distance, 0, -self.width);
-                transform = CATransform3DRotate(transform, currentAngle, 0, 1, 0);
-                transform = CATransform3DTranslate(transform, 0, 0, self.width);
-                attributes.transform3D = transform;
-                attributes.alpha = (ABS(currentAngle) < self.maxAngle);
-            }
+			if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
+				CGFloat distance = CGRectGetMidY(attributes.frame) - self.midY;
+				CGFloat currentAngle = self.maxAngle * distance / self.height / M_PI_2;
+				CATransform3D transform = CATransform3DIdentity;
+				transform = CATransform3DTranslate(transform, 0, distance, -self.height);
+				transform = CATransform3DRotate(transform, currentAngle, 1, 0, 0);
+				transform = CATransform3DTranslate(transform, 0, 0, self.height);
+				attributes.transform3D = transform;
+				attributes.alpha = (ABS(currentAngle) < self.maxAngle);
+			} else {
+				CGFloat distance = CGRectGetMidX(attributes.frame) - self.midX;
+				CGFloat currentAngle = self.maxAngle * distance / self.width / M_PI_2;
+				CATransform3D transform = CATransform3DIdentity;
+				transform = CATransform3DTranslate(transform, -distance, 0, -self.width);
+				transform = CATransform3DRotate(transform, currentAngle, 0, 1, 0);
+				transform = CATransform3DTranslate(transform, 0, 0, self.width);
+				attributes.transform3D = transform;
+				attributes.alpha = (ABS(currentAngle) < self.maxAngle);
+			}
 			return attributes; break;
 		}
 		default: return nil; break;
