@@ -487,7 +487,7 @@
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForItemAtIndexPath:indexPath];
+	UICollectionViewLayoutAttributes *attributes = [[super layoutAttributesForItemAtIndexPath:indexPath] copy];
 	switch ([self.delegate pickerViewStyleForCollectionViewLayout:self]) {
 		case AKPickerViewStyleFlat: {
 			return attributes; break;
