@@ -182,9 +182,13 @@
 	[self invalidateIntrinsicContentSize];
 	[self.collectionView.collectionViewLayout invalidateLayout];
 	[self.collectionView reloadData];
-	if ([self.dataSource numberOfItemsInPickerView:self]) {
-		[self selectItem:self.selectedItem animated:NO notifySelection:NO];
-	}
+    NSUInteger count = [self.dataSource numberOfItemsInPickerView:self];
+    if (count > 0 ) {
+        if (self.selectedItem >= count) {
+            _selectedItem = count - 1;
+        }
+        [self selectItem:self.selectedItem animated:NO notifySelection:NO];
+    }
 }
 
 - (CGFloat)offsetForItem:(NSUInteger)item
