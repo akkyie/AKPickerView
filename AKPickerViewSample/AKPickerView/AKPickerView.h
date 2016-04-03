@@ -48,5 +48,6 @@ typedef NS_ENUM(NSInteger, AKPickerViewStyle) {
 - (void)reloadData;
 - (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated;
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated;
+- (void)deselectItem:(NSUInteger)item;
 
 @end

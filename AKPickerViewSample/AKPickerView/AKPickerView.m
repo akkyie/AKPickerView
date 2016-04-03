@@ -259,6 +259,11 @@
 		[self.delegate pickerView:self didSelectItem:item];
 }
 
+- (void)deselectItem:(NSUInteger)item {
+    AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]];
+    [cell setSelected:NO];
+}
+
 - (void)didEndScrolling
 {
 	switch (self.pickerViewStyle) {
