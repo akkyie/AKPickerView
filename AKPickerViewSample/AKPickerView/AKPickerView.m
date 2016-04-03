@@ -211,6 +211,19 @@
 
 - (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated
 {
+    /*
+     Fix when called in view did appear, font won't change if just
+     called `scrollToItemAtIndexPath:atScrollPosition:animated:` method,
+     this will force other cells on collection view reload their font.
+     */
+    NSArray<NSIndexPath *> *indexPaths = [self.collectionView indexPathsForVisibleItems];
+    for (NSIndexPath *indexPath in indexPaths) {
+        AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        if (indexPath.row != item) {
+            [cell setSelected:NO];
+        }
+    }
+
 	switch (self.pickerViewStyle) {
 		case AKPickerViewStyleFlat: {
 			[self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
@@ -244,6 +257,11 @@
 	if (notifySelection &&
 		[self.delegate respondsToSelector:@selector(pickerView:didSelectItem:)])
 		[self.delegate pickerView:self didSelectItem:item];
+}
+
+- (void)deselectItem:(NSUInteger)item {
+    AKCollectionViewCell *cell = (AKCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]];
+    [cell setSelected:NO];
 }
 
 - (void)didEndScrolling
