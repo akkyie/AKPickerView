@@ -353,6 +353,9 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([self.delegate respondsToSelector:@selector(pickerView:willSelectItem:)])
+        [self.delegate pickerView:self willSelectItem:indexPath.item];
+    
 	[self selectItem:indexPath.item animated:YES];
 }
 
